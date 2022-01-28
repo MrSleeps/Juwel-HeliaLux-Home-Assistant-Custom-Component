@@ -2,7 +2,7 @@
     "domain": "juwel_helialux",
     "name": "Juwel Helialux",
     "version": "0.0.1",
-    "documentation": "https://github.com/custom-components/sensor.plex_recently_added",
+    "documentation": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component",
     "dependencies": [],
 	"config_flow": true,
     "codeowners": ["@mrsleeps"],
