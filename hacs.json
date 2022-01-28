@@ -1,0 +1,6 @@
+{
+  "name": "Juwel Helialux Smart Controller",
+  "country": "GB",
+  "domains": ["sensor"],
+  "render_readme" : true
+}
