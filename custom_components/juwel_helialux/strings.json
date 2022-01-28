@@ -1,0 +1,18 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Can't connect to Smart Controller"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "name": "Name"
+                },
+                "description": "Juwel Helialux Smart Controller",
+                "title": "Juwel Helialux"
+            }
+        },
+        "title": "Juwel Helialux"
+    }
+}
