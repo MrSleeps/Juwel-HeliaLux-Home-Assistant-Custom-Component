@@ -4,7 +4,8 @@
     "version": "0.0.1",
     "documentation": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component",
     "dependencies": [],
-	"config_flow": true,
+    "config_flow": false,
     "codeowners": ["@mrsleeps"],
-    "requirements": []
+    "requirements": [],
+    "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues"
   }
