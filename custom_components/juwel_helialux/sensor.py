@@ -6,7 +6,6 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import TEMP_CELSIUS # TO REMOVE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -24,7 +23,7 @@ import logging
 import requests
 from .const import DOMAIN, ENTITY_ID_FORMAT, DEFAULT_NAME, DEFAULT_DATE_FORMAT, ATTR_MEASUREMENT_DATE, ATTR_UNIT_OF_MEASUREMENT, MIN_TIME_BETWEEN_UPDATES, STATUS_VARS_REGEX
 
-
+SCAN_INTERVAL = timedelta(minutes=1)
 REQUIREMENTS = []
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = 'sensor'
@@ -158,7 +157,7 @@ class JuwelApiData:
         self.juwel = Controller(url="http://"+self._host)
         self.result = {}
 
-    @Throttle(MIN_TIME_BETWEEN_UPDATES)
+    @Throttle(SCAN_INTERVAL)
     def update(self):
         result = {}
 
@@ -252,19 +251,3 @@ class Controller:
     def stop_manual_color_simulation(self):
         requests.post(self._url + "/stat", {"action": 14, "cswi": "false"})
         requests.post(self._url + "/stat", {"action": 10})
-
-
-
-class ExampleSensor(SensorEntity):
-    """Representation of a Sensor."""
-
-    _attr_name = "Example Temperature"
-    _attr_native_unit_of_measurement = TEMP_CELSIUS
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
-    _attr_state_class = SensorStateClass.MEASUREMENT
-
-    def update(self) -> None:
-        """Fetch new state data for the sensor.
-        This is the only method that should fetch new data for Home Assistant.
-        """
-        self._attr_native_value = 23
