@@ -1,7 +1,7 @@
 {
     "domain": "juwel_helialux",
     "name": "Juwel Helialux",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "documentation": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component",
     "dependencies": [],
     "config_flow": false,
