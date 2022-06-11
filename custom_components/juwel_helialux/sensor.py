@@ -13,7 +13,7 @@ from homeassistant.util import Throttle
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import (CONF_HOST, CONF_NAME, CONF_SCAN_INTERVAL)
+from homeassistant.const import (CONF_HOST, CONF_NAME, CONF_SCAN_INTERVAL, STATE_CLOSED, STATE_CLOSING, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
 import voluptuous as vol
 from datetime import timedelta, date, datetime
 from requests import Session
