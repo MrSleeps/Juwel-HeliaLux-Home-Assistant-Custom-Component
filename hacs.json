@@ -1,7 +1,5 @@
 {
   "name": "Juwel Helialux Smart Controller",
   "country": "GB",
-  "domains": ["sensor"],
-  "render_readme" : true,
-  "iot_class": "cloud_polling"
+  "render_readme" : true
 }
