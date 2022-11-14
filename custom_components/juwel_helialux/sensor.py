@@ -64,14 +64,13 @@ class JuwelSensor(Entity):
         self._unit_of_measurement = None
         self._state = None
         self._icon = None
-        _LOGGER.debug("Debug:=%s", tank_name)
+        self._unique_id = tank_name
     @property
-    def name(self):
-        """Return the name of the sensor."""
-        return self._name
+    def unique_id(self):
+        return self._unique_id    
+
     @property
     def tank_name(self):
-        """Return the name of the sensor."""
         return self._tank_name        
     @property
     def juwel_data(self):
@@ -134,22 +133,28 @@ class JuwelSensor(Entity):
             self._icon = 'mdi:fishbowl-outline'
             self._name = self._tank_name + ' Current Profile'
             self._unit_of_measurement = ""
+            self._unique_id = self._tank_name + 'Current Profile'
         if self._measurement == "currentWhite":
             self._icon = 'mdi:brightness-percent'
             self._name = self._tank_name + ' White'
             self._unit_of_measurement = "%"
+            self._unique_id = self._tank_name + 'Current White'
         if self._measurement == "currentBlue":
             self._icon = 'mdi:brightness-percent'
             self._name = self._tank_name + ' Blue'
             self._unit_of_measurement = "%"
+            self._unique_id = self._tank_name + 'Current Blue'
         if self._measurement == "currentRed":
             self._icon = 'mdi:brightness-percent'
             self._name = self._tank_name + ' Red'
             self._unit_of_measurement = "%"
+            self._unique_id = self._tank_name + 'Current Red'
         if self._measurement == "currentGreen":
             self._icon = 'mdi:brightness-percent'
             self._name = self._tank_name + ' Green'
-            self._unit_of_measurement = "%"            
+            self._unit_of_measurement = "%"
+            self._unique_id = self._tank_name + 'Current Green'
+            
 
 class JuwelApiData:
     def __init__(self, host):
