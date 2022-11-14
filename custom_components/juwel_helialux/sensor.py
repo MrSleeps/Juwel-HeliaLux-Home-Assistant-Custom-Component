@@ -21,6 +21,7 @@ import json
 from typing import Pattern, Dict, Union
 import logging
 import requests
+import requests.exceptions
 from .const import DOMAIN, ENTITY_ID_FORMAT, DEFAULT_NAME, DEFAULT_DATE_FORMAT, ATTR_MEASUREMENT_DATE, ATTR_UNIT_OF_MEASUREMENT, MIN_TIME_BETWEEN_UPDATES, STATUS_VARS_REGEX
 
 SCAN_INTERVAL = timedelta(minutes=1)
@@ -63,7 +64,7 @@ class JuwelSensor(Entity):
         self._unit_of_measurement = None
         self._state = None
         self._icon = None
-        _LOGGER.debug("DEbug:=%s", tank_name)
+        _LOGGER.debug("Debug:=%s", tank_name)
     @property
     def name(self):
         """Return the name of the sensor."""
@@ -113,7 +114,6 @@ class JuwelSensor(Entity):
         }
         
     def update(self):
-        """Get the latest data from the Greenchoice API."""
         self._juwel_data.update()
 
         data = self._juwel_data.result
@@ -168,9 +168,7 @@ class JuwelApiData:
             self.result["currentBlue"] = juwelData['currentBlue']
             self.result["currentRed"] = juwelData['currentRed']
             self.result["currentGreen"] = juwelData['currentGreen']
-            _LOGGER.debug("DEbug:=%s", juwelData)
-            #_LOGGER.debug("token json_response=%s", json_result)
-            #_LOGGER.debug(juwelData)
+            _LOGGER.debug("Debug:=%s", juwelData)
         except Exception as Argument:
             _LOGGER.error("Something broke: %s",Argument)
             self.result = "Could not retrieve data."
@@ -192,6 +190,7 @@ def parse_status_vars(status_vars):
             assert(False)
 
         output[match['name']] = value
+        _LOGGER.debug("JUWEL OUTPUT: ",value)
     return output
 
 def normalize_brightness(val):
@@ -215,9 +214,21 @@ class Controller:
         self._url = url
 
     def _statusvars(self):
-        _LOGGER.debug("Fetching state from controller")
-        response = requests.get(self._url + "/statusvars.js")
-        return parse_status_vars(response.content.decode("utf-8"))
+        offlinevalue = "lang=1;lamp='4Ch';profNum=1;profile='Offline';tsimtime=860;tsimact=0;csimact=0;brightness=[0,0,0,0];times=[0,0,705,720,1200,1230,1260,1350,1439];CH1=[0,0,0,0,0,0,0,0,0];CH2=[5,0,0,0,0,0,0,0,0];CH3=[0,0,0,0,0,0,0,0,0];CH4=[0,0,0,0,0,0,0,0,0];"
+        _LOGGER.info("Fetching state from Juwel controller")
+        try:
+            response = requests.get(self._url + "/statusvars.js", verify=False, timeout=10)
+            response.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xxx
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            _LOGGER.info("Juwel controller appears to be offline")
+            return parse_status_vars(offlinevalue)
+        except requests.exceptions.HTTPError:
+            _LOGGER.info("Juwel controller appears to be offline")
+            return parse_status_vars(offlinevalue)
+        else:
+            _LOGGER.info("Juwel Response: ",response.content.decode("utf-8"))
+            return parse_status_vars(response.content.decode("utf-8"))            
+
 
     def get_status(self):
         """Fetch the current status from the controller."""
