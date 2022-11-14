@@ -26,5 +26,5 @@ Restart Home Assistant and your sensors should appear.
 
 ## Manual Control
 
-labactani has posted over on the Home Assistant forum on how they got manual control working, head on over to the [thread on the Home Assistant forum](https://community.home-assistant.io/t/custom-component-juwel-helialux-smart-controller/385515/11) for more information. **Please note that I've not tried this method, if you have any issues please post on the forum and not on Github.**
+m1c has posted over on the Home Assistant forum on how they got manual control working, head on over to the [thread on the Home Assistant forum](https://community.home-assistant.io/t/custom-component-juwel-helialux-smart-controller/385515/8) for more information. **Please note that I've not tried this method, if you have any issues please post on the forum and not on Github.**
 
