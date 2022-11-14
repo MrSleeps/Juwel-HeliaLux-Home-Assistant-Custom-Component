@@ -23,3 +23,8 @@ sensor:
 Change **host** to the ip address of your Juwel HeliaLux Smart Controller and change **name** to the name of your tank (Dave?).
 
 Restart Home Assistant and your sensors should appear.
+
+## Manual Control
+
+labactani has posted over on the Home Assistant forum on how they got manual control working, head on over to the [thread on the Home Assistant forum](https://community.home-assistant.io/t/custom-component-juwel-helialux-smart-controller/385515/9) for more information. **Please note that I've not tried this method, any issues please post on the forum and not on Github.**
+
