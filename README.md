@@ -25,7 +25,7 @@ Change **host** to the ip address of your Juwel HeliaLux Smart Controller and ch
 Restart Home Assistant and your sensors should appear.
 
 ## Check your firmware version!
-jakerol pointed out that v1 firmwares don't appear to work with this custom component, please make sure your HeliaLux firmware is at least v2.1. You can update by heading over to your Juwel HeliaLux controller webpage, click on the settings click and click the info link at the bottom of the page (in the middle, possible an "i" icon) and then click firmware.
+[jakerol](https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues/4#issuecomment-1318268129) pointed out that v1 firmware don't appear to work with this custom component, please make sure your HeliaLux firmware is at least v2.1 (why wouldn't you be on v2.. v1 was ugly). You can update by heading over to your Juwel HeliaLux controller webpage, click on the settings click and click the info link at the bottom of the page (in the middle, possible an "i" icon) and then click firmware.
 
 ## Manual Control
 
