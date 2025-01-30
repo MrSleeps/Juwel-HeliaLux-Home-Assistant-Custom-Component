@@ -22,7 +22,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     # Create individual sensors with default values
     attribute_sensors = [
-        JuwelHelialuxAttributeSensor(coordinator, tank_name, "profile", default_value="offline"),
+        JuwelHelialuxAttributeSensor(coordinator, tank_name, "current_profile", default_value="offline"),
         JuwelHelialuxAttributeSensor(coordinator, tank_name, "white", default_value=0),
         JuwelHelialuxAttributeSensor(coordinator, tank_name, "blue", default_value=0),
         JuwelHelialuxAttributeSensor(coordinator, tank_name, "green", default_value=0),
@@ -51,7 +51,6 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
         url = f"{self.tank_protocol}://{self.tank_host}" if "://" not in self.tank_protocol else f"{self.tank_protocol}{self.tank_host}"
         self.helialux = Helialux(url)
 
-
     async def _async_update_data(self):
         try:
             data = await self.helialux.get_status()  # ✅ Await async function directly
@@ -63,7 +62,20 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
                 )
                 return {}
 
-            return data
+            # Ensure we always include profile and color data
+            profile = data.get("currentProfile", "offline")
+            color_data = {
+                "red": data.get("currentRed", 0),
+                "green": data.get("currentGreen", 0),
+                "blue": data.get("currentBlue", 0),
+                "white": data.get("currentWhite", 0),
+            }
+
+            # Merge profile and color data to retain all attributes
+            self.data.update({"profile": profile, **color_data})  # Ensure no data is lost
+
+            return self.data
+
         except Exception as e:
             _LOGGER.error("Error fetching data from Helialux device: %s", e)
             return {}  # Ensure empty dictionary on failure
@@ -81,11 +93,23 @@ class JuwelHelialuxSensor(CoordinatorEntity, SensorEntity):
         """Return 'online' if data is available, otherwise 'offline'."""
         return "online" if self.coordinator.data else "offline"
 
-
     @property
     def extra_state_attributes(self):
-        """Return all available attributes."""
-        return self.coordinator.data or {}
+        """Return all available attributes including colors and profile."""
+        # Combine the profile and color data with the existing data from the coordinator
+        color_data = {
+            "red": self.coordinator.data.get("red", 0),
+            "green": self.coordinator.data.get("green", 0),
+            "blue": self.coordinator.data.get("blue", 0),
+            "white": self.coordinator.data.get("white", 0),
+        }
+
+        profile_data = {
+            "current_profile": self.coordinator.data.get("profile", "offline")
+        }
+
+        # Merge the color and profile data together
+        return {**self.coordinator.data, **color_data, **profile_data}
 
     async def async_remove(self):
         """Cleanup resources when the entity is removed."""
@@ -106,6 +130,7 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
     @property
     def state(self):
         data = self.coordinator.data or {}  # Ensure data is always a dictionary
+        # Return the attribute value, or a default if not found
         return data.get(self._attribute, self._default_value)
 
     async def async_remove(self):
