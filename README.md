@@ -18,7 +18,7 @@ Once installed it gives you a bunch of sensors and a new light that you can turn
 
 ## How to install
 
-**Before we head down the install route, if you are upgrading from the original rubbish version I wrote years back, please read the [upgrade guide](https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/blob/main/UPGRADE.md). **
+**Before we head down the install route, if you are upgrading from the original rubbish version I wrote years back, please read the [upgrade guide](https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/blob/main/UPGRADE.md).**
 
 Once you have done that...
 
