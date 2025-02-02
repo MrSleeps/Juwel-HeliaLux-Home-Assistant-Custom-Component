@@ -80,6 +80,7 @@ class JuwelHelialuxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 old_data[f"{tank_name}_red"] = old_data.pop(f"{tank_name}_red", 0)
                 old_data[f"{tank_name}_white"] = old_data.pop(f"{tank_name}_white", 0)
                 old_data[f"{tank_name}_profile"] = old_data.pop(f"{tank_name}_current_profile", "None")
+                old_data[f"{tank_name}_current_profile"] = old_data.pop(f"{tank_name}_current_profile", "None")
 
                 # Remove old sensor keys if they exist to avoid duplication
                 for color in ["blue", "green", "red", "white"]:
@@ -112,64 +113,10 @@ class JuwelHelialuxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 old_data["manualDaytimeSimulationEnabled"] = False
             if "deviceTime" not in old_data:
                 old_data["deviceTime"] = "00:00:00"  # Or another default time format
-
-            # Ensure the update interval is set to a default value if missing
-            if CONF_UPDATE_INTERVAL not in old_data:
-                _LOGGER.debug(f"Update interval not found, setting to default 1 minute for {config_entry.title}")
-                old_data[CONF_UPDATE_INTERVAL] = 1  # Default value for the update interval
-
-            # Set the new version for the config entry
-            config_entry.version = 2
-
-            # Update the config entry with the new data
-            hass.config_entries.async_update_entry(config_entry, data=old_data)
-
-            _LOGGER.debug(f"Config entry {config_entry.title} migration to version 2 completed.")
-
-        return True
-
-        """Migrate old config entry to the new version."""
-        version = config_entry.version
-        _LOGGER.debug(f"Migrating config entry {config_entry.title} from version {version} to version 2")
-        if version == 0 or version is None:
-            version = 1
-            
-        if version == 1:
-            # Migration for version 1 to version 2
-            old_data = config_entry.data
-            tank_name = old_data.get("name")  # Get the tank name from config entry
-
-            if tank_name:
-                _LOGGER.debug(f"Migrating sensor names for {tank_name}")
-
-                # Rename and ensure no old sensor names are left
-                old_data[f"{tank_name}_blue"] = old_data.pop(f"{tank_name}_blue", 0)
-                old_data[f"{tank_name}_green"] = old_data.pop(f"{tank_name}_green", 0)
-                old_data[f"{tank_name}_red"] = old_data.pop(f"{tank_name}_red", 0)
-                old_data[f"{tank_name}_white"] = old_data.pop(f"{tank_name}_white", 0)
-                old_data[f"{tank_name}_profile"] = old_data.pop(f"{tank_name}_current_profile", "None")
-
-                # Remove old sensor keys if they exist to avoid duplication
-                for color in ["blue", "green", "red", "white"]:
-                    old_data.pop(f"{tank_name}_{color}", None)
-
-                _LOGGER.debug(f"Old sensor names for {tank_name} migrated and removed.")
-
-            # Remove any leftover entities
-            _LOGGER.debug("Cleaning up old entities (if any).")
-            for sensor in ['blue', 'green', 'red', 'white', 'profile']:
-                entity_id = f"sensor.{tank_name}_{sensor}"
-                if hass.helpers.entity_registry.async_is_registered(entity_id):
-                    _LOGGER.debug(f"Removing old entity: {entity_id}")
-                    hass.helpers.entity_registry.async_remove(entity_id)
-
-            # Add any missing configuration values with default options
-            if "manualColorSimulationEnabled" not in old_data:
-                old_data["manualColorSimulationEnabled"] = False
-            if "manualDaytimeSimulationEnabled" not in old_data:
-                old_data["manualDaytimeSimulationEnabled"] = False
-            if "deviceTime" not in old_data:
-                old_data["deviceTime"] = "00:00:00"  # Or another default time format
+            if "profile" not in old_data:
+                old_data["profile"] = "None"
+            if "current_profile" not in old_data:
+                old_data["current_profile"] = "None"
 
             # Ensure the update interval is set to a default value if missing
             if CONF_UPDATE_INTERVAL not in old_data:

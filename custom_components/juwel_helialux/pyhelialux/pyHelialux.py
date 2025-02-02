@@ -78,10 +78,14 @@ class Controller:
     async def get_status(self):
         """Fetch the current status from the controller."""
         statusvars_text = await self._statusvars()
+        _LOGGER.debug("Raw statusvars.js text: %s", statusvars_text)
+
         if statusvars_text:
             statusvars = parse_status_vars(statusvars_text)
+            _LOGGER.debug("Parsed statusvars: %s", statusvars)
+
             return {
-                "currentProfile": statusvars["profile"],
+                "currentProfile": statusvars.get("profile", "offline"),  # Use .get() to avoid KeyError
                 "currentWhite": statusvars["brightness"][0],
                 "currentBlue": statusvars["brightness"][1],
                 "currentGreen": statusvars["brightness"][2],
@@ -92,18 +96,6 @@ class Controller:
             }
         else:
             return None
-
-#    async def start_manual_color_simulation(self, duration=60):
-#        """Start manual color simulation asynchronously."""
-#        session = await self._get_session()
-#        url = f"{self._url}/stat"
-#        data = {"action": 14, "cswi": "true", "ctime": nr_mins_to_formatted(duration)}
-#        try:
-#            async with session.post(url, data=data) as response:
-#                if response.status != 200:
-#                    _LOGGER.error(f"Failed to start manual color simulation: {response.status}")
-#        except Exception as e:
-#            _LOGGER.error(f"Error starting manual color simulation: {e}")
 
     async def set_manual_color(self, white, blue, green, red):
         """Set manual color asynchronously."""
@@ -131,34 +123,6 @@ class Controller:
                     _LOGGER.error("Failed to set manual color: %d", response.status)
         except Exception as e:
             _LOGGER.error("Error setting manual color: %s", e)
-
-
-#    async def set_manual_color(self, white, blue, green, red):
-#        """Set manual color asynchronously."""
-#        session = await self._get_session()
-#        url = f"{self._url}/stat"
-        
-        # Ensure manual color simulation is enabled first
-#        await self.start_manual_color_simulation(60)  # Set it for 60 minutes
-
-#        params = {
-#            "action": 10,
-#            "ch1": normalize_brightness(white),
-#            "ch2": normalize_brightness(blue),
-#            "ch3": normalize_brightness(green),
-#            "ch4": normalize_brightness(red),
-#        }
-
-#        _LOGGER.debug("Sending color update to Juwel: %s", params)
-
-#        try:
-#            async with session.post(url, data=params) as response:
-#                response_text = await response.text()
-#                _LOGGER.debug("Juwel Response: %s", response_text)
-#                if response.status != 200:
-#                    _LOGGER.error("Failed to set manual color: %d", response.status)
-#        except Exception as e:
-#            _LOGGER.error("Error setting manual color: %s", e)
 
     async def start_manual_color_simulation(self, duration=60):
         """Start manual color simulation asynchronously."""

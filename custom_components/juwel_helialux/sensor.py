@@ -53,17 +53,22 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         try:
-            data = await self.helialux.get_status()  # ✅ Await async function directly
+            data = await self.helialux.get_status()
             _LOGGER.debug("Raw data received from Helialux: %s", data)
 
-            if not isinstance(data, dict):  # Ensure data is a dictionary
+            if not isinstance(data, dict):
                 _LOGGER.warning(
                     "Unexpected data format from Helialux device, defaulting to empty dict. Received: %s", type(data)
                 )
                 return {}
-
+            # Initialize self.data as an empty dict if it's None
+            if self.data is None:
+                self.data = {}
+                
             # Ensure we always include profile and color data
             profile = data.get("currentProfile", "offline")
+            deviceTime = data.get("deviceTime", "00:00")
+            
             color_data = {
                 "red": data.get("currentRed", 0),
                 "green": data.get("currentGreen", 0),
@@ -72,7 +77,7 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
             }
 
             # Merge profile and color data to retain all attributes
-            self.data.update({"profile": profile, **color_data})  # Ensure no data is lost
+            self.data.update({"current_profile": profile, **color_data, "deviceTime": deviceTime})  # Ensure no data is lost
 
             return self.data
 
@@ -105,11 +110,15 @@ class JuwelHelialuxSensor(CoordinatorEntity, SensorEntity):
         }
 
         profile_data = {
-            "current_profile": self.coordinator.data.get("profile", "offline")
+            "current_profile": self.coordinator.data.get("current_profile", "offline")
         }
+        
+        time_data = {
+            "deviceTime": self.coordinator.data.get("deviceTime", "00:00")
+        }        
 
         # Merge the color and profile data together
-        return {**self.coordinator.data, **color_data, **profile_data}
+        return {**self.coordinator.data, **color_data, **profile_data, **time_data}
 
     async def async_remove(self):
         """Cleanup resources when the entity is removed."""
