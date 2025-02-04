@@ -10,6 +10,16 @@
           "tank_name": "Tank Name",
           "update_interval": "Update Interval (1-60 minutes)"
         }
+      },
+      "init": {
+        "title": "Configure Juwel Helialux",
+        "description": "Enter the details for your tank.",
+        "data": {
+          "tank_protocol": "http or https",
+          "tank_host": "Tank Host (IP address)",
+          "tank_name": "Tank Name",
+          "update_interval": "Update Interval (1-60 minutes)"
+        }
       }
     },
     "error": {

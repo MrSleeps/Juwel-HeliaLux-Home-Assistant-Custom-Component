@@ -128,8 +128,10 @@ class Controller:
         """Start manual color simulation asynchronously."""
         session = await self._get_session()
         url = f"{self._url}/stat"
-        data = {"action": 14, "cswi": "true", "ctime": nr_mins_to_formatted(duration)}
+        stimTime = nr_mins_to_formatted(duration)
+        data = {"action": 14, "cswi": "true", "ctime": stimTime}
         try:
+            _LOGGER.debug(data)
             async with session.post(url, data=data) as response:
                 if response.status != 200:
                     _LOGGER.error(f"Failed to start manual color simulation: {response.status}")

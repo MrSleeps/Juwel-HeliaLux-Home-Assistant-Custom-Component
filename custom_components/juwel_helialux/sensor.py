@@ -12,7 +12,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     tank_name = config_entry.data[CONF_TANK_NAME]
     tank_host = config_entry.data[CONF_TANK_HOST]
     tank_protocol = config_entry.data[CONF_TANK_PROTOCOL]
-    update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, 5)  # Default to 5 minutes
+    update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, 1)
 
     coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, update_interval)
     await coordinator.async_config_entry_first_refresh()
