@@ -3,10 +3,9 @@
   "name": "Juwel HeliaLux",
   "codeowners": ["@mrsleeps"],
   "config_flow": true,
-  "dependencies": [],
   "documentation": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component",
-  "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues",
+  "integration_type": "hub",
   "iot_class": "local_polling",
-  "requirements": ["aiohttp"],
-  "version": "1.0.3"
+  "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues"",
+  "requirements": ["aiohttp"]
 }
