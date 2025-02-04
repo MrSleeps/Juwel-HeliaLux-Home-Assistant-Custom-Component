@@ -13,7 +13,7 @@ Once installed it gives you a bunch of sensors and a new light that you can turn
 * `tankname_current_profile`
 * `tankname_manualcolorsimulationenabled`
 * `tankname_manualdaytimesimulationenabled`
-* `tankname_tropical_tank_profile`
+* `tankname_deviceTime`
 * `tankname_tank_sensor` (this combines all the above sensors into one)
 
 ## How to install
