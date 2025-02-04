@@ -1,6 +1,5 @@
 {
   "name": "Juwel Helialux Smart Controller",
   "country": "GB",
-  "render_readme" : true,
   "homeassistant": "2025.1.1",
 }
