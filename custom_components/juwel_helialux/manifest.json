@@ -4,6 +4,7 @@
   "codeowners": ["@mrsleeps"],
   "config_flow": true,
   "documentation": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component",
+  "homeassistant": "2025.1.0",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues",
