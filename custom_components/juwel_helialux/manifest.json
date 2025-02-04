@@ -8,11 +8,5 @@
   "requirements": ["aiohttp"],
   "iot_class": "local_polling",
   "version": "1.0.3",
-  "config_flow": true,
-  "translations": [
-    {
-      "language": "en",
-      "path": "translations/en.json"
-    }
-  ]
+  "config_flow": true
 }
