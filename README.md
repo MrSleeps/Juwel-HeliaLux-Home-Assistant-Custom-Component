@@ -32,7 +32,9 @@ You'll have your sensors listed above and a new light (light.tankname_light) to 
 
 ## Things to be aware of
 
-The Juwel Helialux unit is a bit clunky and is easily overloaded (mine at least). So when you are changing colours it can get overloaded and not do what you want it to do. The controller website will cancel out all your changes if you visit the website manually! This includes embedding the page in Home Assistant (any time the controller website is opened it will take control of the controller and do its own thing).
+The Juwel Helialux unit is a bit clunky and is easily overloaded (mine at least). So when you are changing colours it can get overloaded and not do what you want it to do. 
+
+**The controller website will cancel out all your changes if you visit the website manually! This includes embedding the page in Home Assistant (any time the controller website is opened it will take control of the controller and do its own thing).**
 
 Also, Home Assistants way of dealing with colours on the colour wheel doesn't play overly well with the Juwel Helialux Controller. If you are having trouble getting just RGB colours then drag the white brightness down and have a wiggle with the colour wheel. I'm working to fix it but tbh, I don't really know what I am doing. Any other bugs then please post on GitHub.
 
