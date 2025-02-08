@@ -9,5 +9,11 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues",
   "requirements": ["aiohttp"],
-  "version": "1.0.3"
+  "version": "1.0.3",
+  "translations": [
+    {
+      "language": "en",
+      "path": "translations/en.json"
+    }
+  ]
 }

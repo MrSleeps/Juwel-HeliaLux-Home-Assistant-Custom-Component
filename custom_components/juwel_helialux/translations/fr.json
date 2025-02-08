@@ -1,0 +1,50 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurer Juwel Helialux",
+        "description": "Entrez les détails de votre aquarium.",
+        "data": {
+          "tank_protocol": "http ou https",
+          "tank_host": "Hôte du réservoir (adresse IP)",
+          "tank_name": "Nom du réservoir",
+          "update_interval": "Intervalle de mise à jour (1-60 minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Hôte invalide fourni.",
+      "invalid_name": "Nom invalide fourni.",
+      "invalid_update_interval": "Intervalle de mise à jour invalide fourni."
+    },
+    "abort": {
+      "already_configured": "Ce réservoir est déjà configuré."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Reconfigurer Juwel Helialux",
+        "description": "Mettez à jour les détails de votre aquarium.",
+        "data": {
+          "tank_protocol": "http ou https",
+          "tank_host": "Hôte du réservoir (adresse IP)",
+          "tank_name": "Nom du réservoir",
+          "update_interval": "Intervalle de mise à jour (1-60 minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "red": { "name": "{tank_name} Intensité de la lumière rouge" },
+      "green": { "name": "{tank_name} Intensité de la lumière verte" },
+      "blue": { "name": "{tank_name} Intensité de la lumière bleue" },
+      "white": { "name": "{tank_name} Intensité de la lumière blanche" },
+      "current_profile": { "name": "{tank_name} Profil d'éclairage actuel" },
+      "manualColorSimulationEnabled": { "name": "{tank_name} Simulation manuelle de couleur" },
+      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Simulation manuelle de la journée" },
+      "device_time": { "name": "{tank_name} Heure de l'appareil" }
+    }
+  }
+}

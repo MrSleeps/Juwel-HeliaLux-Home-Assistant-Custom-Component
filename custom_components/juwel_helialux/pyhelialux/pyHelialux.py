@@ -75,6 +75,21 @@ class Controller:
             _LOGGER.error(f"Error fetching statusvars.js: {e}")
             return None
 
+    async def _wpvars(self):
+        """Fetch wpvars.js asynchronously."""
+        session = await self._get_session()
+        url = f"{self._url}/wpvars.js"
+        try:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    return await response.text()
+                else:
+                    _LOGGER.error(f"Failed to fetch wpvars.js: {response.status}")
+                    return None
+        except Exception as e:
+            _LOGGER.error(f"Error fetching wpvars.js: {e}")
+            return None
+
     async def get_status(self):
         """Fetch the current status from the controller."""
         statusvars_text = await self._statusvars()
@@ -93,6 +108,22 @@ class Controller:
                 "manualColorSimulationEnabled": statusvars["csimact"] == 1,
                 "manualDaytimeSimulationEnabled": statusvars["tsimact"] == 1,
                 "deviceTime": nr_mins_to_formatted(statusvars["tsimtime"]),
+            }
+        else:
+            return None
+
+    async def get_profiles(self):
+        """Fetch the profile information from the controller."""
+        wpvars_text = await self._wpvars()
+        _LOGGER.debug("Raw wpvars.js text: %s", wpvars_text)
+
+        if wpvars_text:
+            wpvars = parse_status_vars(wpvars_text)
+            _LOGGER.debug("Parsed wpvars: %s", wpvars)
+
+            return {
+                "profile_names": wpvars.get("profnames", []),
+                "profile_selection": wpvars.get("profsel", []),
             }
         else:
             return None

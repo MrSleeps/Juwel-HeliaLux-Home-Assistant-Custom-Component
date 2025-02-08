@@ -10,16 +10,6 @@
           "tank_name": "Tank Name",
           "update_interval": "Update Interval (1-60 minutes)"
         }
-      },
-      "init": {
-        "title": "Configure Juwel Helialux",
-        "description": "Enter the details for your tank.",
-        "data": {
-          "tank_protocol": "http or https",
-          "tank_host": "Tank Host (IP address)",
-          "tank_name": "Tank Name",
-          "update_interval": "Update Interval (1-60 minutes)"
-        }
       }
     },
     "error": {
@@ -29,6 +19,32 @@
     },
     "abort": {
       "already_configured": "This tank is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Reconfigure Juwel Helialux",
+        "description": "Update the details for your tank.",
+        "data": {
+          "tank_protocol": "http or https",
+          "tank_host": "Tank Host (IP address)",
+          "tank_name": "Tank Name",
+          "update_interval": "Update Interval (1-60 minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "red": { "name": "{tank_name} Red Light Intensity" },
+      "green": { "name": "{tank_name} Green Light Intensity" },
+      "blue": { "name": "{tank_name} Blue Light Intensity" },
+      "white": { "name": "{tank_name} White Light Intensity" },
+      "current_profile": { "name": "{tank_name} Current Lighting Profile" },
+      "manualColorSimulationEnabled": { "name": "{tank_name} Manual Colour Simulation" },
+      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Manual Daytime Simulation" },
+      "device_time": { "name": "{tank_name} Device Time" }
     }
   }
 }

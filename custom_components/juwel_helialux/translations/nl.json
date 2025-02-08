@@ -1,0 +1,50 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configureer Juwel Helialux",
+        "description": "Voer de details in voor je aquarium.",
+        "data": {
+          "tank_protocol": "http of https",
+          "tank_host": "Aquarium Host (IP-adres)",
+          "tank_name": "Aquarium Naam",
+          "update_interval": "Update Interval (1-60 minuten)"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Ongeldige host opgegeven.",
+      "invalid_name": "Ongeldige naam opgegeven.",
+      "invalid_update_interval": "Ongeldig update-intervallo opgegeven."
+    },
+    "abort": {
+      "already_configured": "Dit aquarium is al geconfigureerd."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Herconfigureer Juwel Helialux",
+        "description": "Werk de details voor je aquarium bij.",
+        "data": {
+          "tank_protocol": "http of https",
+          "tank_host": "Aquarium Host (IP-adres)",
+          "tank_name": "Aquarium Naam",
+          "update_interval": "Update Interval (1-60 minuten)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "red": { "name": "{tank_name} Rode Lichtintensiteit" },
+      "green": { "name": "{tank_name} Groene Lichtintensiteit" },
+      "blue": { "name": "{tank_name} Blauwe Lichtintensiteit" },
+      "white": { "name": "{tank_name} Witte Lichtintensiteit" },
+      "current_profile": { "name": "{tank_name} Huidig Verlichtingsprofiel" },
+      "manualColorSimulationEnabled": { "name": "{tank_name} Handmatige Kleursimulatie" },
+      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Handmatige Dagelijksimulatie" },
+      "device_time": { "name": "{tank_name} Apparaat Tijd" }
+    }
+  }
+}
