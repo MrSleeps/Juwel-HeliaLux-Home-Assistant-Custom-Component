@@ -23,14 +23,28 @@ async def async_setup_entry(hass, entry):
     hass.data[DOMAIN][entry.entry_id] = coordinator  # Store it
 
     # Forward setup to platforms (sensor, light)
-    await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "light"])
+    await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "light", "select"])
     
     return True
 
-
-
 async def async_unload_entry(hass, entry):
+    """Handle removal of an entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, ["sensor","light"])
+    
+    # Remove device registry entries
+    device_registry = hass.helpers.device_registry.async_get(hass)
+    devices = device_registry.devices
+
+    # Find and remove the device associated with this config entry
+    for device in devices.values():
+        if entry.entry_id in device.config_entries:
+            _LOGGER.debug(f"Removing device {device.name} from registry")
+            device_registry.async_remove_device(device.id)
+
+    return unload_ok
+
+#async def async_unload_entry(hass, entry):
     """Unload a config entry for the Juwel Helialux integration."""
     #unload_successful = await hass.config_entries.async_unload_platforms(entry, ["sensor", "light"])
-    unload_successful = await hass.config_entries.async_unload_platforms(entry, ["sensor","light"])
-    return unload_successful
+#    unload_successful = await hass.config_entries.async_unload_platforms(entry, ["sensor","light"])
+#    return unload_successful
