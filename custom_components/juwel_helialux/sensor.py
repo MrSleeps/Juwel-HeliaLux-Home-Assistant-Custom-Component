@@ -338,9 +338,9 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
 class JuwelHelialuxProfilesSensor(CoordinatorEntity, SensorEntity):
     """Sensor to display available profiles from the Helialux controller."""
 
-    def __init__(self, coordinator, tank_name):
+    def __init__(self, coordinator, tank_name, attribute):
         """Initialize the profiles sensor."""
-#        super().__init__(coordinator)
+        super().__init__(coordinator)
 #        self._attr_name = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
 #        self._attr_unique_id = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
 #        self._attr_icon = "mdi:format-list-bulleted"  # Optional: Add an icon for the sensor
@@ -351,8 +351,10 @@ class JuwelHelialuxProfilesSensor(CoordinatorEntity, SensorEntity):
 
         # Set the translation key and placeholders
         self.entity_description = SensorEntityDescription(
-            key="profiles",  # Use "profiles" as the translation key
-            translation_key="profiles",  # Use "profiles" as the translation key
+            #key="profiles",  # Use "profiles" as the translation key
+            #translation_key="profiles",  # Use "profiles" as the translation key
+            key=attribute,
+            translation_key=attribute,  # Use the attribute as the translation key            
         )
 
         # Ensure Home Assistant does not prepend the device name to the friendly name

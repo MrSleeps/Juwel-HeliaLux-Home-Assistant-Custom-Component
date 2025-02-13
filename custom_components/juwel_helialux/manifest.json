@@ -10,7 +10,7 @@
   "issue_tracker": "https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues",
   "platforms": ["sensor", "light", "select", "binary_sensor"],
   "requirements": ["aiohttp"],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "translations": [
     {
       "language": "en",
