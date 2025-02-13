@@ -21,8 +21,8 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 
 ## Other Entities/Devices
 * `select.tankname_profiles`
-* `binary_sensor.tankname_manual_color_simulation_enabled` (Currently read-only)
-* `binary_sensor.tankname_manual_daytime_simulation_enabled` (Currently read-only)
+* `binary_sensor.tankname_manual_color_simulation_enabled`
+* `binary_sensor.tankname_manual_daytime_simulation_enabled`
 * `light.tankname_light`
 
 

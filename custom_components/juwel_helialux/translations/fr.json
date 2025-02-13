@@ -6,19 +6,19 @@
         "description": "Entrez les détails de votre aquarium.",
         "data": {
           "tank_protocol": "http ou https",
-          "tank_host": "Hôte du réservoir (adresse IP)",
-          "tank_name": "Nom du réservoir",
-          "update_interval": "Intervalle de mise à jour (1-60 minutes)"
+          "tank_host": "Hôte de l'Aquarium (Adresse IP)",
+          "tank_name": "Nom de l'Aquarium",
+          "update_interval": "Intervalle de Mise à Jour (1-60 minutes)"
         }
       }
     },
     "error": {
-      "invalid_host": "Hôte invalide fourni.",
-      "invalid_name": "Nom invalide fourni.",
-      "invalid_update_interval": "Intervalle de mise à jour invalide fourni."
+      "invalid_host": "Hôte invalide.",
+      "invalid_name": "Nom invalide.",
+      "invalid_update_interval": "Intervalle de mise à jour invalide."
     },
     "abort": {
-      "already_configured": "Ce réservoir est déjà configuré."
+      "already_configured": "Cet aquarium est déjà configuré."
     }
   },
   "options": {
@@ -28,24 +28,28 @@
         "description": "Mettez à jour les détails de votre aquarium.",
         "data": {
           "tank_protocol": "http ou https",
-          "tank_host": "Hôte du réservoir (adresse IP)",
-          "tank_name": "Nom du réservoir",
-          "update_interval": "Intervalle de mise à jour (1-60 minutes)"
+          "tank_host": "Hôte de l'Aquarium (Adresse IP)",
+          "tank_name": "Nom de l'Aquarium",
+          "update_interval": "Intervalle de Mise à Jour (1-60 minutes)"
         }
       }
     }
   },
   "entity": {
     "sensor": {
-      "red": { "name": "{tank_name} Intensité de la lumière rouge" },
-      "green": { "name": "{tank_name} Intensité de la lumière verte" },
-      "blue": { "name": "{tank_name} Intensité de la lumière bleue" },
-      "white": { "name": "{tank_name} Intensité de la lumière blanche" },
-      "current_profile": { "name": "{tank_name} Profil d'éclairage actuel" },
-      "manualColorSimulationEnabled": { "name": "{tank_name} Simulation manuelle de couleur" },
-      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Simulation manuelle de la journée" },
-      "device_time": { "name": "{tank_name} Heure de l'appareil" },
-	  "profiles": { "name": "{tank_name} Profils disponibles" }
+      "red": { "name": "Intensité Lumière Rouge" },
+      "green": { "name": "Intensité Lumière Verte" },
+      "blue": { "name": "Intensité Lumière Bleue" },
+      "white": { "name": "Intensité Lumière Blanche" },
+      "current_profile": { "name": "Profil d'Éclairage Actuel" },
+      "manualColorSimulationEnabled": { "name": "Simulation Manuel de Couleur" },
+      "manualDaytimeSimulationEnabled": { "name": "Simulation Manuel de Jour/Nuit" },
+      "device_time": { "name": "Heure de l'Appareil" },
+      "profiles": { "name": "Profils Disponibles" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Simulation Manuel de Couleur Activée" },
+      "manual_daytime_simulation": { "name": "Simulation Manuel de Jour/Nuit Activée" }
     }
   }
 }

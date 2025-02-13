@@ -3,33 +3,33 @@
     "step": {
       "user": {
         "title": "Ρύθμιση Juwel Helialux",
-        "description": "Εισαγάγετε τις λεπτομέρειες για το ενυδρείο σας.",
+        "description": "Εισαγάγετε τις λεπτομέρειες για τη δεξαμενή σας.",
         "data": {
           "tank_protocol": "http ή https",
-          "tank_host": "Host Ενυδρείου (διεύθυνση IP)",
-          "tank_name": "Όνομα Ενυδρείου",
+          "tank_host": "Διεύθυνση Host (Διεύθυνση IP)",
+          "tank_name": "Όνομα Δεξαμενής",
           "update_interval": "Διάστημα Ενημέρωσης (1-60 λεπτά)"
         }
       }
     },
     "error": {
-      "invalid_host": "Παράσχετε μη έγκυρο host.",
-      "invalid_name": "Παράσχετε μη έγκυρο όνομα.",
-      "invalid_update_interval": "Παράσχετε μη έγκυρο διάστημα ενημέρωσης."
+      "invalid_host": "Μη έγκυρη διεύθυνση host.",
+      "invalid_name": "Μη έγκυρο όνομα.",
+      "invalid_update_interval": "Μη έγκυρο διάστημα ενημέρωσης."
     },
     "abort": {
-      "already_configured": "Αυτό το ενυδρείο είναι ήδη ρυθμισμένο."
+      "already_configured": "Αυτή η δεξαμενή έχει ήδη ρυθμιστεί."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Επαναρύθμιση Juwel Helialux",
-        "description": "Ενημερώστε τις λεπτομέρειες για το ενυδρείο σας.",
+        "description": "Ενημερώστε τις λεπτομέρειες για τη δεξαμενή σας.",
         "data": {
           "tank_protocol": "http ή https",
-          "tank_host": "Host Ενυδρείου (διεύθυνση IP)",
-          "tank_name": "Όνομα Ενυδρείου",
+          "tank_host": "Διεύθυνση Host (Διεύθυνση IP)",
+          "tank_name": "Όνομα Δεξαμενής",
           "update_interval": "Διάστημα Ενημέρωσης (1-60 λεπτά)"
         }
       }
@@ -37,15 +37,19 @@
   },
   "entity": {
     "sensor": {
-      "red": { "name": "{tank_name} Ένταση Κόκκινου Φωτός" },
-      "green": { "name": "{tank_name} Ένταση Πράσινου Φωτός" },
-      "blue": { "name": "{tank_name} Ένταση Μπλε Φωτός" },
-      "white": { "name": "{tank_name} Ένταση Λευκού Φωτός" },
-      "current_profile": { "name": "{tank_name} Τρέχον Προφίλ Φωτισμού" },
-      "manualColorSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Χρώματος" },
-      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Ημέρας" },
-      "device_time": { "name": "{tank_name} Ώρα Συσκευής" },
-	  "profiles": { "name": "{tank_name} Διαθέσιμα προφίλ" }
+      "red": { "name": "Ένταση Κόκκινου Φωτός" },
+      "green": { "name": "Ένταση Πράσινου Φωτός" },
+      "blue": { "name": "Ένταση Μπλε Φωτός" },
+      "white": { "name": "Ένταση Λευκού Φωτός" },
+      "current_profile": { "name": "Τρέχον Πρόφίλ Φωτισμού" },
+      "manualColorSimulationEnabled": { "name": "Προσομοίωση Χειροκίνητου Χρώματος" },
+      "manualDaytimeSimulationEnabled": { "name": "Προσομοίωση Χειροκίνητης Ώρας" },
+      "device_time": { "name": "Ώρα Συσκευής" },
+      "profiles": { "name": "Διαθέσιμα Πρόφιλ" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Ενεργοποιημένη Προσομοίωση Χειροκίνητου Χρώματος" },
+      "manual_daytime_simulation": { "name": "Ενεργοποιημένη Προσομοίωση Χειροκίνητης Ώρας" }
     }
   }
 }

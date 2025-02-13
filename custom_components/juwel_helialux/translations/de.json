@@ -6,8 +6,8 @@
         "description": "Geben Sie die Details für Ihr Aquarium ein.",
         "data": {
           "tank_protocol": "http oder https",
-          "tank_host": "Aquarium Host (IP-Adresse)",
-          "tank_name": "Aquarium Name",
+          "tank_host": "Aquarium-Host (IP-Adresse)",
+          "tank_name": "Aquarium-Name",
           "update_interval": "Aktualisierungsintervall (1-60 Minuten)"
         }
       }
@@ -28,8 +28,8 @@
         "description": "Aktualisieren Sie die Details für Ihr Aquarium.",
         "data": {
           "tank_protocol": "http oder https",
-          "tank_host": "Aquarium Host (IP-Adresse)",
-          "tank_name": "Aquarium Name",
+          "tank_host": "Aquarium-Host (IP-Adresse)",
+          "tank_name": "Aquarium-Name",
           "update_interval": "Aktualisierungsintervall (1-60 Minuten)"
         }
       }
@@ -37,15 +37,19 @@
   },
   "entity": {
     "sensor": {
-      "red": { "name": "{tank_name} Rote Lichtintensität" },
-      "green": { "name": "{tank_name} Grüne Lichtintensität" },
-      "blue": { "name": "{tank_name} Blaue Lichtintensität" },
-      "white": { "name": "{tank_name} Weiße Lichtintensität" },
-      "current_profile": { "name": "{tank_name} Aktuelles Lichtprofil" },
-      "manualColorSimulationEnabled": { "name": "{tank_name} Manuelle Farbsimulation" },
-      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Manuelle Tageszeitsimulation" },
-      "device_time": { "name": "{tank_name} Gerätezeit" },
-	  "profiles": { "name": "{tank_name} Verfügbare Profile" }
+      "red": { "name": "Rote Lichtintensität" },
+      "green": { "name": "Grüne Lichtintensität" },
+      "blue": { "name": "Blaue Lichtintensität" },
+      "white": { "name": "Weiße Lichtintensität" },
+      "current_profile": { "name": "Aktuelles Lichtprofil" },
+      "manualColorSimulationEnabled": { "name": "Manuelle Farbsimulation" },
+      "manualDaytimeSimulationEnabled": { "name": "Manuelle Tageszeitsimulation" },
+      "device_time": { "name": "Gerätezeit" },
+      "profiles": { "name": "Verfügbare Profile" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Manuelle Farbsimulation aktiviert" },
+      "manual_daytime_simulation": { "name": "Manuelle Tageszeitsimulation aktiviert" }
     }
   }
 }

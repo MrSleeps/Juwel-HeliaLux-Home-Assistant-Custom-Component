@@ -3,33 +3,33 @@
     "step": {
       "user": {
         "title": "Configurar Juwel Helialux",
-        "description": "Ingresa los detalles para tu acuario.",
+        "description": "Ingrese los detalles de su tanque.",
         "data": {
           "tank_protocol": "http o https",
-          "tank_host": "Host del Acuario (dirección IP)",
-          "tank_name": "Nombre del Acuario",
+          "tank_host": "Host del Tanque (Dirección IP)",
+          "tank_name": "Nombre del Tanque",
           "update_interval": "Intervalo de Actualización (1-60 minutos)"
         }
       }
     },
     "error": {
-      "invalid_host": "Host inválido proporcionado.",
-      "invalid_name": "Nombre inválido proporcionado.",
-      "invalid_update_interval": "Intervalo de actualización inválido proporcionado."
+      "invalid_host": "Host no válido.",
+      "invalid_name": "Nombre no válido.",
+      "invalid_update_interval": "Intervalo de actualización no válido."
     },
     "abort": {
-      "already_configured": "Este acuario ya está configurado."
+      "already_configured": "Este tanque ya está configurado."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Reconfigurar Juwel Helialux",
-        "description": "Actualiza los detalles para tu acuario.",
+        "description": "Actualice los detalles de su tanque.",
         "data": {
           "tank_protocol": "http o https",
-          "tank_host": "Host del Acuario (dirección IP)",
-          "tank_name": "Nombre del Acuario",
+          "tank_host": "Host del Tanque (Dirección IP)",
+          "tank_name": "Nombre del Tanque",
           "update_interval": "Intervalo de Actualización (1-60 minutos)"
         }
       }
@@ -37,15 +37,19 @@
   },
   "entity": {
     "sensor": {
-      "red": { "name": "{tank_name} Intensidad de Luz Roja" },
-      "green": { "name": "{tank_name} Intensidad de Luz Verde" },
-      "blue": { "name": "{tank_name} Intensidad de Luz Azul" },
-      "white": { "name": "{tank_name} Intensidad de Luz Blanca" },
-      "current_profile": { "name": "{tank_name} Perfil de Iluminación Actual" },
-      "manualColorSimulationEnabled": { "name": "{tank_name} Simulación Manual de Color" },
-      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Simulación Manual de Horario de Día" },
-      "device_time": { "name": "{tank_name} Hora del Dispositivo" },
-	  "profiles": { "name": "{tank_name} Perfiles disponibles" }
+      "red": { "name": "Intensidad de Luz Roja" },
+      "green": { "name": "Intensidad de Luz Verde" },
+      "blue": { "name": "Intensidad de Luz Azul" },
+      "white": { "name": "Intensidad de Luz Blanca" },
+      "current_profile": { "name": "Perfil de Iluminación Actual" },
+      "manualColorSimulationEnabled": { "name": "Simulación Manual de Color" },
+      "manualDaytimeSimulationEnabled": { "name": "Simulación Manual de Hora del Día" },
+      "device_time": { "name": "Hora del Dispositivo" },
+      "profiles": { "name": "Perfiles Disponibles" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Simulación Manual de Color Activada" },
+      "manual_daytime_simulation": { "name": "Simulación Manual de Hora del Día Activada" }
     }
   }
 }
