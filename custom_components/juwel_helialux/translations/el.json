@@ -45,7 +45,7 @@
       "manualColorSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Χρώματος" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Ημέρας" },
       "device_time": { "name": "{tank_name} Ώρα Συσκευής" },
-	  "profiles": { "name": "{tank_name} Διαθέσιμος αριθμός προφίλ" }
+	  "profiles": { "name": "{tank_name} Διαθέσιμα προφίλ" }
     }
   }
 }

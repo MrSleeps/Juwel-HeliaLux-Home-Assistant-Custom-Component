@@ -14,10 +14,17 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 * `tankname_red`
 * `tankname_white`
 * `tankname_current_profile`
-* `tankname_manualcolorsimulationenabled`
-* `tankname_manualdaytimesimulationenabled`
+* `tankname_manualcolorsimulationenabled` **This will be removed in a future version**
+* `tankname_manualdaytimesimulationenabled` **This will be removed in a future version**
 * `tankname_deviceTime`
-* `tankname_tank_sensor` (this combines all the above sensors into one)
+* `tankname_tank_combined_sensor` (this combines all the above sensors into one)
+
+## Other Entities/Devices
+* `select.tankname_profiles`
+* `binary_sensor.tankname_manual_color_simulation_enabled` (Currently read-only)
+* `binary_sensor.tankname_manual_daytime_simulation_enabled` (Currently read-only)
+* `light.tankname_light`
+
 
 ## How to install
 

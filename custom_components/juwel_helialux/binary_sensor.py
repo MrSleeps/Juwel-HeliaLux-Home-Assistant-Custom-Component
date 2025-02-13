@@ -38,9 +38,27 @@ class ManualColorSimulationBinarySensor(CoordinatorEntity, BinarySensorEntity):
         self._tank_protocol = tank_protocol
         self._tank_host = tank_host
         self._attr_unique_id = f"{tank_name}_manual_color_simulation"
-        self._attr_name = f"{tank_name} - Manual Color Simulation Enabled"
+        
+        # Use translation key for the name
+        self._attr_translation_key = "manual_color_simulation"
+        self._attr_has_entity_name = True  # Prepend the device name to the friendly name
+
+        # Explicitly set the entity_id
+        self.entity_id = f"binary_sensor.{tank_name}_manual_color_simulation"
+
         # Use the coordinator's device_info
         self._attr_device_info = coordinator.device_info
+
+        # Log the translation key for debugging
+        _LOGGER.debug("Translation key for %s: %s", self._attr_unique_id, self._attr_translation_key)
+
+    async def async_added_to_hass(self):
+        """Ensure options are updated when the entity is added."""
+        await super().async_added_to_hass()
+        self.async_write_ha_state()
+
+        # Log the final name for debugging
+        _LOGGER.debug("Final name for %s: %s", self._attr_unique_id, self.name)
 
     @property
     def is_on(self):
@@ -63,9 +81,27 @@ class ManualDaytimeSimulationBinarySensor(CoordinatorEntity, BinarySensorEntity)
         self._tank_protocol = tank_protocol
         self._tank_host = tank_host
         self._attr_unique_id = f"{tank_name}_manual_daytime_simulation"
-        self._attr_name = f"{tank_name} - Manual Daytime Simulation Enabled"
+        
+        # Use translation key for the name
+        self._attr_translation_key = "manual_daytime_simulation"
+        self._attr_has_entity_name = True  # Prepend the device name to the friendly name
+
+        # Explicitly set the entity_id
+        self.entity_id = f"binary_sensor.{tank_name}_manual_daytime_simulation"
+
         # Use the coordinator's device_info
         self._attr_device_info = coordinator.device_info
+
+        # Log the translation key for debugging
+        _LOGGER.debug("Translation key for %s: %s", self._attr_unique_id, self._attr_translation_key)
+
+    async def async_added_to_hass(self):
+        """Ensure options are updated when the entity is added."""
+        await super().async_added_to_hass()
+        self.async_write_ha_state()
+
+        # Log the final name for debugging
+        _LOGGER.debug("Final name for %s: %s", self._attr_unique_id, self.name)
 
     @property
     def is_on(self):

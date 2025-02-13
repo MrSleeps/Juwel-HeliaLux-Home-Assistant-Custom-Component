@@ -45,7 +45,7 @@
       "manualColorSimulationEnabled": { "name": "{tank_name} Simulación Manual de Color" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Simulación Manual de Horario de Día" },
       "device_time": { "name": "{tank_name} Hora del Dispositivo" },
-	  "profiles": { "name": "{tank_name} Número de perfiles disponibles" }
+	  "profiles": { "name": "{tank_name} Perfiles disponibles" }
     }
   }
 }

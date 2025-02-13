@@ -37,15 +37,19 @@
   },
   "entity": {
     "sensor": {
-      "red": { "name": "{tank_name} Red Light Intensity" },
-      "green": { "name": "{tank_name} Green Light Intensity" },
-      "blue": { "name": "{tank_name} Blue Light Intensity" },
-      "white": { "name": "{tank_name} White Light Intensity" },
-      "current_profile": { "name": "{tank_name} Current Lighting Profile" },
-      "manualColorSimulationEnabled": { "name": "{tank_name} Manual Colour Simulation" },
-      "manualDaytimeSimulationEnabled": { "name": "{tank_name} Manual Daytime Simulation" },
-      "device_time": { "name": "{tank_name} Device Time" },
-	  "profiles": { "name": "{tank_name} Available Profile Count" }
+      "red": { "name": "Red Light Intensity" },
+      "green": { "name": "Green Light Intensity" },
+      "blue": { "name": "Blue Light Intensity" },
+      "white": { "name": "White Light Intensity" },
+      "current_profile": { "name": "Current Lighting Profile" },
+      "manualColorSimulationEnabled": { "name": "Manual Colour Simulation" },
+      "manualDaytimeSimulationEnabled": { "name": "Manual Daytime Simulation" },
+      "device_time": { "name": "Device Time" },
+      "profiles": { "name": "Available Profiles" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Manual Colour Simulation Enabled" },
+      "manual_daytime_simulation": { "name": "Manual Daytime Simulation Enabled (Test)" }
     }
   }
 }

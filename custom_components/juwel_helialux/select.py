@@ -31,6 +31,10 @@ class JuwelHelialuxProfileSelect(CoordinatorEntity, SelectEntity):
         self._attr_options = []  # Initialize options as an empty list
         self._current_profile = None
 
+        # Use the coordinator's device_info to link to the same device
+        self._attr_device_info = coordinator.device_info
+        _LOGGER.debug("Device info for select entity %s: %s", self._attr_unique_id, self._attr_device_info)
+
     @property
     def options(self):
         """Return available profile options (clean names for display)."""

@@ -318,6 +318,11 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
         # Additional sensor properties
         self._attribute = attribute
         self._default_value = default_value
+        # Use the coordinator's device_info
+        self._attr_device_info = coordinator.device_info
+
+        # Log the device info for debugging
+        _LOGGER.debug("Device info for %s: %s", self._attr_unique_id, self._attr_device_info)        
 
     @property
     def state(self):
@@ -339,34 +344,24 @@ class JuwelHelialuxProfilesSensor(CoordinatorEntity, SensorEntity):
     """Sensor to display available profiles from the Helialux controller."""
 
     def __init__(self, coordinator, tank_name, attribute):
-        """Initialize the profiles sensor."""
         super().__init__(coordinator)
-#        self._attr_name = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
-#        self._attr_unique_id = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
-#        self._attr_icon = "mdi:format-list-bulleted"  # Optional: Add an icon for the sensor
-        # Use the coordinator's device_info
-#        self._attr_device_info = coordinator.device_info
-        self._attr_unique_id = f"{tank_name}_profiles"  # Ensure unique ID follows the naming convention
-        self.entity_id = f"sensor.{tank_name.lower()}_profiles"  # Explicitly set entity ID
+        self._attr_unique_id = f"{tank_name}_profiles"
+        self.entity_id = f"sensor.{tank_name.lower()}_profiles"
 
         # Set the translation key and placeholders
         self.entity_description = SensorEntityDescription(
-            #key="profiles",  # Use "profiles" as the translation key
-            #translation_key="profiles",  # Use "profiles" as the translation key
-            key=attribute,
-            translation_key=attribute,  # Use the attribute as the translation key            
+            key="profiles",  # Use "profiles" as the translation key
+            translation_key="profiles",  # Use "profiles" as the translation key
         )
 
         # Ensure Home Assistant does not prepend the device name to the friendly name
-        self._attr_has_entity_name = True  # 🚀 CRITICAL: Prevents HA from prepending the device name
+        self._attr_has_entity_name = True
 
         # Pass the tank_name as a placeholder for the translation
         self._attr_translation_placeholders = {"tank_name": tank_name}
 
         # Use the coordinator's device_info
         self._attr_device_info = coordinator.device_info
-
-
 
 
     @property
@@ -396,7 +391,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     tank_protocol = config_entry.data[CONF_TANK_PROTOCOL]
     update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, 1)
     coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, tank_name, update_interval)
-
     # Ensure `coordinator.data` is never None
     if coordinator.data is None:
         coordinator.data = {}
@@ -406,7 +400,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     # Create main sensor and profile sensor
     main_sensor = JuwelHelialuxSensor(coordinator, tank_name)
-    profiles_sensor = JuwelHelialuxProfilesSensor(coordinator, tank_name)
+    profiles_sensor = JuwelHelialuxProfilesSensor(coordinator, tank_name, "available_profiles")
 
     # Create attribute sensors with correct names and unique IDs
     attribute_sensors = [
