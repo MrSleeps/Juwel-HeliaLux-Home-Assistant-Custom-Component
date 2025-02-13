@@ -272,7 +272,6 @@ class Controller:
         _LOGGER.debug(f"Posting url: {url}")
 
         # Prepare the data to send to the Helialux device
-        # The data should include key=BU and s0 to s6 with the same profile name
         data = {
             "key": "BU",
             "s0": profile_name_two,

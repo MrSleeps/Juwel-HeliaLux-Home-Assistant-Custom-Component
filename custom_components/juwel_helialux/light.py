@@ -39,22 +39,23 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
 
     def __init__(self, coordinator, tank_name):
         """Initialize the light entity."""
-        super().__init__(coordinator)
-
+        super().__init__(coordinator)#
         # Use the 'self.helialux' from the coordinator
         self._controller = coordinator.helialux  # Using the existing 'Helialux' instance
+        # Set the name and unique ID to follow the desired format
         self._attr_name = f"{tank_name} Light"
-        self._attr_unique_id = f"juwel_helialux_{tank_name.lower().replace(' ', '_')}"
-        # Ensure Home Assistant can identify this entity
-        self.entity_id = f"light.{self._attr_unique_id}"        
-
+        self._attr_unique_id = f"{tank_name.lower().replace(' ', '_')}_light"  # Ensure unique ID follows the naming convention
+        # Explicitly set the entity ID to follow the desired format
+        self.entity_id = f"light.{self._attr_unique_id}"  # This will result in light.tank_name_light
         # Supported color modes
         self._attr_supported_color_modes = {ColorMode.RGBW}
         self._attr_color_mode = ColorMode.RGBW
-
         self._attr_is_on = False
         self._attr_brightness = None
         self._attr_rgbw_color = (0, 0, 0, 0)
+        # Use the coordinator's device_info
+        self._attr_device_info = coordinator.device_info
+
 
     @property
     def is_on(self):

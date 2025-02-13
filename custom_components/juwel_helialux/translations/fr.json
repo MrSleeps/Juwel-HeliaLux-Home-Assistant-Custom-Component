@@ -44,7 +44,8 @@
       "current_profile": { "name": "{tank_name} Profil d'éclairage actuel" },
       "manualColorSimulationEnabled": { "name": "{tank_name} Simulation manuelle de couleur" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Simulation manuelle de la journée" },
-      "device_time": { "name": "{tank_name} Heure de l'appareil" }
+      "device_time": { "name": "{tank_name} Heure de l'appareil" },
+	  "profiles": { "name": "{tank_name} Nombre de profils disponibles" }
     }
   }
 }

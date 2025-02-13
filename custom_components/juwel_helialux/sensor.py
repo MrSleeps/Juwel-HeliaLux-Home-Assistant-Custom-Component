@@ -1,19 +1,35 @@
 import logging
 from datetime import timedelta
 from homeassistant.components.sensor import (
-    SensorDeviceClass,
+#    SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
+    SensorEntityDescription,
+    EntityDescription
 )
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.components.select import SelectEntity
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.translation import async_get_translations
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_NAME, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
 from .pyhelialux.pyHelialux import Controller as Helialux
 
+
 _LOGGER = logging.getLogger(__name__)
+
+ENTITY_DESCRIPTIONS = {
+    "red": EntityDescription(key="red"),
+    "green": EntityDescription(key="green"),
+    "blue": EntityDescription(key="blue"),
+    "white": EntityDescription(key="white"),
+    "current_profile": EntityDescription(key="current_profile"),
+    "manualColorSimulationEnabled": EntityDescription(key="manualColorSimulationEnabled"),
+    "manualDaytimeSimulationEnabled": EntityDescription(key="manualDaytimeSimulationEnabled"),
+    "device_time": EntityDescription(key="device_time"),
+}
+
 
 async def _async_update_data(self):
     """Fetch the latest data from the Helialux device."""
@@ -63,7 +79,7 @@ async def _async_update_data(self):
 class JuwelHelialuxCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the Juwel Helialux device."""
 
-    def __init__(self, hass, tank_host, tank_protocol, update_interval):
+    def __init__(self, hass, tank_host, tank_protocol, tank_name, update_interval):
         super().__init__(
             hass,
             _LOGGER,
@@ -79,10 +95,10 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
         self.data = {}  
         # Set default device info (to be updated after first fetch)
         self.device_info = {
-            "identifiers": {(DOMAIN, self.tank_host)},
-            "name": tank_host,
+            "identifiers": {(DOMAIN, tank_name)},
+            "name": tank_name,
             "manufacturer": "Juwel",
-            "model": "Unknown",
+            "model": "Helialux",
             "sw_version": "Unknown",
             "hw_version": "Unknown",
             "configuration_url": url,
@@ -144,11 +160,13 @@ class JuwelHelialuxSensor(CoordinatorEntity, SensorEntity):
 
     def __init__(self, coordinator, tank_name):
         super().__init__(coordinator)
-        self._attr_name = f"{tank_name} Sensor"  # Changed to "tankname_sensor"
+        self._attr_name = f"{tank_name} Combined Sensor"  # Changed to "tankname_sensor"
         self._attr_unique_id = f"{tank_name}_sensor"  # Changed to "tankname_sensor"
         self.tank_name = tank_name
         self.device_info_data = {}  # Placeholder for device info
         self._attr_device_info = {}  # Will be set after fetching device info
+        # Use the coordinator's device_info
+        self._attr_device_info = coordinator.device_info
 
     async def _initialize_device_info(self):
         """Fetch and initialize device info during initialization."""
@@ -256,31 +274,50 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
     """Creates a sensor for each individual attribute."""
 
     SENSOR_ICONS = {
-        "red": "mdi:palette",
-        "green": "mdi:palette",
-        "blue": "mdi:palette",
-        "white": "mdi:palette",
+        "red": "mdi:brightness-percent",
+        "green": "mdi:brightness-percent",
+        "blue": "mdi:brightness-percent",
+        "white": "mdi:brightness-percent",
+        "manualDaytimeSimulationEnabled": "mdi:sun-clock",
+        "manualColorSimulationEnabled": "mdi:palette",
+        "device_time": "mdi:clock-time-five",
     }
+
+    SENSOR_TYPE_FALLBACKS = {
+        "red": "Light Intensity Sensor",
+        "green": "Light Intensity Sensor",
+        "blue": "Light Intensity Sensor",
+        "white": "Light Intensity Sensor",
+        "current_profile": "Current Lighting Profile",
+        "manualColorSimulationEnabled": "Manual Color Simulation",
+        "manualDaytimeSimulationEnabled": "Manual Daytime Simulation",
+    }    
 
     def __init__(self, coordinator, tank_name, attribute, default_value=None, SensorStateClass="", unit=""):
         """Initialize the sensor."""
         super().__init__(coordinator)
 
-        # Set the sensor name and unique ID
-        self._attr_name = f"{tank_name}_{attribute}"  # Changed to "tankname_attribute"
-        self._attr_unique_id = f"{tank_name}_{attribute}"  # Changed to "tankname_attribute"
+        # Set the unique ID and entity ID to follow the naming convention
+        self._attr_unique_id = f"{tank_name}_{attribute}"  # Ensure unique ID follows the naming convention
+        self.entity_id = f"sensor.{tank_name.lower()}_{attribute}"  # Explicitly set entity ID
+
+        # Set the translation key and placeholders
+        self.entity_description = SensorEntityDescription(
+            key=attribute,
+            translation_key=attribute,  # Use the attribute as the translation key
+            state_class=SensorStateClass.MEASUREMENT if unit else None,
+            native_unit_of_measurement=unit,
+        )
+
+        # Ensure Home Assistant does not prepend the device name to the friendly name
+        self._attr_has_entity_name = True  # 🚀 CRITICAL: Prevents HA from prepending the device name
+
+        # Pass the tank_name as a placeholder for the translation
+        self._attr_translation_placeholders = {"tank_name": tank_name}
 
         # Additional sensor properties
         self._attribute = attribute
         self._default_value = default_value
-        self._attr_state_class = SensorStateClass  # Assign SensorStateClass
-        self._attr_native_unit_of_measurement = unit or None  # Ensure unit is set
-        self._attr_device_info = {
-            "identifiers": {(DOMAIN, f"{tank_name}_sensor")},
-            "name": f"{tank_name} Sensor",
-            "manufacturer": "Juwel",
-            "model": "Helialux",
-        }
 
     @property
     def state(self):
@@ -303,16 +340,32 @@ class JuwelHelialuxProfilesSensor(CoordinatorEntity, SensorEntity):
 
     def __init__(self, coordinator, tank_name):
         """Initialize the profiles sensor."""
-        super().__init__(coordinator)
-        self._attr_name = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
-        self._attr_unique_id = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
-        self._attr_icon = "mdi:format-list-bulleted"  # Optional: Add an icon for the sensor
-        self._attr_device_info = {
-            "identifiers": {(DOMAIN, f"{tank_name}_sensor")},
-            "name": f"{tank_name} Sensor",
-            "manufacturer": "Juwel",
-            "model": "Helialux",
-        }        
+#        super().__init__(coordinator)
+#        self._attr_name = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
+#        self._attr_unique_id = f"{tank_name}_profiles"  # Changed to "tankname_profiles"
+#        self._attr_icon = "mdi:format-list-bulleted"  # Optional: Add an icon for the sensor
+        # Use the coordinator's device_info
+#        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{tank_name}_profiles"  # Ensure unique ID follows the naming convention
+        self.entity_id = f"sensor.{tank_name.lower()}_profiles"  # Explicitly set entity ID
+
+        # Set the translation key and placeholders
+        self.entity_description = SensorEntityDescription(
+            key="profiles",  # Use "profiles" as the translation key
+            translation_key="profiles",  # Use "profiles" as the translation key
+        )
+
+        # Ensure Home Assistant does not prepend the device name to the friendly name
+        self._attr_has_entity_name = True  # 🚀 CRITICAL: Prevents HA from prepending the device name
+
+        # Pass the tank_name as a placeholder for the translation
+        self._attr_translation_placeholders = {"tank_name": tank_name}
+
+        # Use the coordinator's device_info
+        self._attr_device_info = coordinator.device_info
+
+
+
 
     @property
     def state(self):
@@ -340,8 +393,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     tank_host = config_entry.data[CONF_TANK_HOST]
     tank_protocol = config_entry.data[CONF_TANK_PROTOCOL]
     update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, 1)
-
-    coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, update_interval)
+    coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, tank_name, update_interval)
 
     # Ensure `coordinator.data` is never None
     if coordinator.data is None:

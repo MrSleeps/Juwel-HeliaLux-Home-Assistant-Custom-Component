@@ -44,7 +44,8 @@
       "current_profile": { "name": "{tank_name} Huidig Verlichtingsprofiel" },
       "manualColorSimulationEnabled": { "name": "{tank_name} Handmatige Kleursimulatie" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Handmatige Dagelijksimulatie" },
-      "device_time": { "name": "{tank_name} Apparaat Tijd" }
+      "device_time": { "name": "{tank_name} Apparaat Tijd" },
+	  "profiles": { "name": "{tank_name} Beschikbaar profiel aantal" }
     }
   }
 }

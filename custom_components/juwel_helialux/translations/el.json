@@ -44,7 +44,8 @@
       "current_profile": { "name": "{tank_name} Τρέχον Προφίλ Φωτισμού" },
       "manualColorSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Χρώματος" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Χειροκίνητη Προσομοίωση Ημέρας" },
-      "device_time": { "name": "{tank_name} Ώρα Συσκευής" }
+      "device_time": { "name": "{tank_name} Ώρα Συσκευής" },
+	  "profiles": { "name": "{tank_name} Διαθέσιμος αριθμός προφίλ" }
     }
   }
 }

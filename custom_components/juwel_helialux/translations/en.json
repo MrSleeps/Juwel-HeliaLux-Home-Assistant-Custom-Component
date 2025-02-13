@@ -44,7 +44,8 @@
       "current_profile": { "name": "{tank_name} Current Lighting Profile" },
       "manualColorSimulationEnabled": { "name": "{tank_name} Manual Colour Simulation" },
       "manualDaytimeSimulationEnabled": { "name": "{tank_name} Manual Daytime Simulation" },
-      "device_time": { "name": "{tank_name} Device Time" }
+      "device_time": { "name": "{tank_name} Device Time" },
+	  "profiles": { "name": "{tank_name} Available Profile Count" }
     }
   }
 }
