@@ -1,3 +1,6 @@
+# Original pyHelialux by moretea (https://github.com/moretea/pyHelialux)
+# Updated to work with Home Assistant by MrSleeps (https://github.com/MrSleeps/pyHelialuxHomeAssistant)
+
 import aiohttp
 import asyncio
 import logging

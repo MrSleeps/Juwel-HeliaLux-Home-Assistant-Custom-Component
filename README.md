@@ -9,21 +9,23 @@ Once installed it gives you a bunch of sensors and a new light that you can turn
 
 These sensors are read only, if you want to do things like turn the aquarium light on and off you will need to intereact with light.tankname.
 
-* `tankname_blue`
-* `tankname_green`
-* `tankname_red`
-* `tankname_white`
-* `tankname_current_profile`
+* `tankname_blue` (Blue light intensity, 0-100)
+* `tankname_green` (Green light intensity, 0-100)
+* `tankname_red` (Red light intensity, 0-100)
+* `tankname_white` (White light intensity, 0-100)
+* `tankname_current_profile` (Currently selected profile)tropical_tank_profiles
+* `tankname_profiles` (Count of available profiles)
 * `tankname_manualcolorsimulationenabled` **This will be removed in a future version**
 * `tankname_manualdaytimesimulationenabled` **This will be removed in a future version**
-* `tankname_deviceTime`
+* `tankname_device_time` (Time on the controller)
 * `tankname_tank_combined_sensor` (this combines all the above sensors into one)
 
 ## Other Entities/Devices
-* `select.tankname_profiles`
+* `select.tankname_profiles` (Allows you to choose a profile that the controller will use)
 * `binary_sensor.tankname_manual_color_simulation_enabled`
 * `binary_sensor.tankname_manual_daytime_simulation_enabled`
-* `light.tankname_light`
+* `light.tankname_light` (The main light, allows you to control your tank light)
+* `Tank Device` (All sensors are linked to the relevant device)
 
 
 ## How to install
