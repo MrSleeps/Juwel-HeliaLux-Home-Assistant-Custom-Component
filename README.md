@@ -55,10 +55,9 @@ Also, Home Assistants way of dealing with colours on the colour wheel doesn't pl
 
 ## Bug Reports
 Please follow the template when submitting a bug report, to help logs will be needed. To turn on debug logging for the integration you will need to add something like the following to your configuration.yml
-```    logger:
+```
+    logger:
       default: info`
       logs:
-        custom_components.juwel_helialux: debug```
-
-## Check your firmware version!
-[jakerol](https://github.com/MrSleeps/Juwel-HeliaLux-Home-Assistant-Custom-Component/issues/4#issuecomment-1318268129) pointed out that v1 firmware don't appear to work with this custom component, please make sure your HeliaLux firmware is at least v2.1 (why wouldn't you be on v2.. v1 was ugly). You can update by heading over to your Juwel HeliaLux controller webpage, click on the settings click and click the info link at the bottom of the page (in the middle, possible an "i" icon) and then click firmware.
+        custom_components.juwel_helialux: debug
+```
