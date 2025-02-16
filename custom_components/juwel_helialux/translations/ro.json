@@ -1,0 +1,55 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurare Juwel Helialux",
+        "description": "Introduceți detaliile acvariului dvs.",
+        "data": {
+          "tank_protocol": "http sau https",
+          "tank_host": "Gazdă acvariu (adresa IP)",
+          "tank_name": "Numele acvariului",
+          "update_interval": "Interval de actualizare (1-60 minute)"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Gazdă invalidă.",
+      "invalid_name": "Nume invalid.",
+      "invalid_update_interval": "Interval de actualizare invalid."
+    },
+    "abort": {
+      "already_configured": "Acest acvariu este deja configurat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Reconfigurare Juwel Helialux",
+        "description": "Actualizați detaliile acvariului dvs.",
+        "data": {
+          "tank_protocol": "http sau https",
+          "tank_host": "Gazdă acvariu (adresa IP)",
+          "tank_name": "Numele acvariului",
+          "update_interval": "Interval de actualizare (1-60 minute)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "red": { "name": "Intensitate lumină roșie" },
+      "green": { "name": "Intensitate lumină verde" },
+      "blue": { "name": "Intensitate lumină albastră" },
+      "white": { "name": "Intensitate lumină albă" },
+      "current_profile": { "name": "Profil de iluminare curent" },
+      "manualColorSimulationEnabled": { "name": "Simulare manuală a culorii" },
+      "manualDaytimeSimulationEnabled": { "name": "Simulare manuală a zilei" },
+      "device_time": { "name": "Ora dispozitivului" },
+      "profiles": { "name": "Profiluri disponibile" }
+    },
+    "binary_sensor": {
+      "manual_color_simulation": { "name": "Simulare manuală a culorii activată" },
+      "manual_daytime_simulation": { "name": "Simulare manuală a zilei activată (Test)" }
+    }
+  }
+}
