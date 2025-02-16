@@ -5,6 +5,9 @@ This is a custom component for [Home Assistant](https://www.home-assistant.io/) 
 
 Once installed it gives you a bunch of sensors and a new light that you can turn on and off.
 
+## Helialux firmware
+**Your controller needs to have the latest v2.2.2 firmware from Juwel for this custom component to work**
+
 ## Available sensors
 
 These sensors are read only, if you want to do things like turn the aquarium light on and off you will need to intereact with light.tankname.

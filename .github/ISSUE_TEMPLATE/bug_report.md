@@ -22,6 +22,10 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
+**Juwel Helialux controller firmware version**
+
+**Juwel Helialux controller hardware version**
+
 **Debug Logs**
 Add any relevant debug logs to help us diagnose the problem.
 
