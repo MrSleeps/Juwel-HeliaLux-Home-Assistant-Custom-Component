@@ -16,7 +16,7 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 * `tankname_green` (Green light intensity, 0-100)
 * `tankname_red` (Red light intensity, 0-100)
 * `tankname_white` (White light intensity, 0-100)
-* `tankname_current_profile` (Currently selected profile)tropical_tank_profiles
+* `tankname_current_profile` (Currently selected profile)
 * `tankname_profiles` (Count of available profiles)
 * `tankname_manualcolorsimulationenabled` **This will be removed in a future version**
 * `tankname_manualdaytimesimulationenabled` **This will be removed in a future version**
