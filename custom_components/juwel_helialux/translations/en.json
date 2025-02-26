@@ -49,7 +49,19 @@
     },
     "binary_sensor": {
       "manual_color_simulation": { "name": "Manual Colour Simulation Enabled" },
-      "manual_daytime_simulation": { "name": "Manual Daytime Simulation Enabled (Test)" }
+      "manual_daytime_simulation": { "name": "Manual Daytime Simulation Enabled" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Manual Colour Simulation Duration (minutes)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Manual Daytime Simulation Duration (minutes)"
+      }
+    },
+	"switch": {
+      "manual_color_simulation": { "name": "Manual Colour Simulation" },
+      "manual_daytime_simulation": { "name": "Manual Daytime Simulation" }
     }
   }
 }

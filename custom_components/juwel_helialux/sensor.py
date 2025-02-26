@@ -2,16 +2,18 @@ import logging
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
-    SensorEntityDescription, 
+    SensorEntityDescription,  # Correct import
 )
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.device_registry import DeviceInfo
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_NAME, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
-from .coordinator import JuwelHelialuxCoordinator
+from .coordinator import JuwelHelialuxCoordinator  # Import the coordinator from the new file
+
 _LOGGER = logging.getLogger(__name__)
 
+# Replace EntityDescription with SensorEntityDescription
 ENTITY_DESCRIPTIONS = {
     "red": SensorEntityDescription(key="red"),
     "green": SensorEntityDescription(key="green"),
