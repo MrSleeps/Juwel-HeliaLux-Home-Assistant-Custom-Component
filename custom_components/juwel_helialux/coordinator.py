@@ -37,8 +37,21 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
 
     async def async_config_entry_first_refresh(self):
         """Fetch initial data and store device info."""
-        await self.async_refresh()  # ✅ Use async_refresh() instead of directly calling `_async_update_data`
-        _LOGGER.debug("Device Info Initialized: %s", self.device_info)
+        await self.async_refresh()  # Fetch initial data
+
+        # Fetch device info from the Helialux controller
+        _LOGGER.debug("Fetching device info from Helialux controller...")
+        device_info = await self.helialux.device_info()
+        _LOGGER.debug("Fetched device info: %s", device_info)  # Log fetched info
+
+        if device_info:
+            self.device_info["sw_version"] = device_info.get("firmware_version", "Unknown")
+            self.device_info["hw_version"] = device_info.get("hardware_version", "Unknown")
+            self.device_info["model"] = f"{device_info.get('device_type', 'Unknown')}"
+            _LOGGER.debug("Updated Device Info: %s", self.device_info)
+        else:
+            _LOGGER.error("Failed to fetch device info from Helialux controller.")
+
 
     async def _async_update_data(self):
         """Fetch the latest data from the Helialux device."""
@@ -59,7 +72,13 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
                 _LOGGER.error("Invalid profile data format from Helialux, received: %s", type(profile_data))
                 profile_data = {}
 
-            _LOGGER.debug(f"Before updating HA: current_profile={self.data.get('current_profile', 'offline')}")
+            # Fetch device info and update the device_info dictionary
+            device_info = await self.helialux.device_info()
+            if device_info:
+                self.device_info["sw_version"] = device_info.get("firmware_version", "0.0.0.0")
+                self.device_info["hw_version"] = device_info.get("hardware_version", "0.0.0.0")
+                self.device_info["model"] = f"{device_info.get('device_type', 'Unknown')}"
+                _LOGGER.debug("Updated Device Info: %s", self.device_info)
 
             # Merge status and profile data
             merged_data = {
@@ -76,11 +95,13 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
             }
 
             _LOGGER.debug("Merged data: %s", merged_data)
-            _LOGGER.debug(f"After updating HA: current_profile={merged_data.get('current_profile', 'offline')}")
-            _LOGGER.debug(f"Raw statusvars.js profile: {status_data.get('currentProfile', 'offline')}")
-
             return merged_data  # ✅ Always return a dictionary
 
         except Exception as e:
             _LOGGER.error("Error fetching data from Helialux device: %s", e)
             return {}  # ✅ Always return an empty dictionary
+        
+    async def async_update(self):
+        """Update the entity's state."""
+        await self._async_update_data()  # Call the data update method
+        self.async_write_ha_state()  # Notify Home Assistant to refresh the entity state        
