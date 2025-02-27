@@ -24,13 +24,14 @@ class JuwelHelialuxProfileSelect(CoordinatorEntity, SelectEntity):
     def __init__(self, coordinator, tank_name):
         """Initialize the select entity."""
         super().__init__(coordinator)
-        self._attr_name = f"{tank_name} Profile"
+        #self._attr_name = f"{tank_name} Profile"
         self._attr_unique_id = f"{tank_name}_profile_select"
         self._attr_icon = "mdi:format-list-bulleted"
         self._attr_entity_category = EntityCategory.CONFIG
         self._attr_options = []  # Initialize options as an empty list
         self._current_profile = None
-
+        self._attr_has_entity_name = True 
+        self._attr_translation_key = "profile"
         # Use the coordinator's device_info to link to the same device
         self._attr_device_info = coordinator.device_info
         _LOGGER.debug("Device info for select entity %s: %s", self._attr_unique_id, self._attr_device_info)

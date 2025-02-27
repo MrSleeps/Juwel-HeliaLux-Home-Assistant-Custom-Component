@@ -43,10 +43,12 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         # Use the 'self.helialux' from the coordinator
         self._controller = coordinator.helialux  # Using the existing 'Helialux' instance
         # Set the name and unique ID to follow the desired format
-        self._attr_name = f"{tank_name} Light"
+        #self._attr_name = f"{tank_name} Light"
         self._attr_unique_id = f"{tank_name.lower().replace(' ', '_')}_light"  # Ensure unique ID follows the naming convention
         # Explicitly set the entity ID to follow the desired format
         self.entity_id = f"light.{self._attr_unique_id}"  # This will result in light.tank_name_light
+        self._attr_has_entity_name = True 
+        self._attr_translation_key = "light_name"
         # Supported color modes
         self._attr_supported_color_modes = {ColorMode.RGBW}
         self._attr_color_mode = ColorMode.RGBW

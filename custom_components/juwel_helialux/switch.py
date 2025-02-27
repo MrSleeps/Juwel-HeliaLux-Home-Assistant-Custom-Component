@@ -66,7 +66,9 @@ class HelialuxManualColorSimulationSwitch(HelialuxSwitch):
         """Turn on manual color simulation using the duration set in number helper."""
         duration_entity = f"number.{self.tank_id}_manual_color_simulation_duration"
         duration_state = self.coordinator.hass.states.get(duration_entity)
-        duration = int(duration_state.state) if duration_state else 60  # Default to 60 minutes
+        duration = int(duration_state.state) * 60 if duration_state else 60  # Convert hours to minutes
+
+        _LOGGER.debug(f"Starting manual color simulation for {duration} minutes")  # Debugging log
 
         await self.coordinator.helialux.start_manual_color_simulation(duration)
         await self.coordinator.async_refresh()
@@ -93,7 +95,9 @@ class HelialuxManualDaytimeSimulationSwitch(HelialuxSwitch):
         """Turn on manual daytime simulation using the duration set in number helper."""
         duration_entity = f"number.{self.tank_id}_manual_daytime_simulation_duration"
         duration_state = self.coordinator.hass.states.get(duration_entity)
-        duration = int(duration_state.state) if duration_state else 60  # Default to 60 minutes
+        duration = int(duration_state.state) * 60 if duration_state else 60  # Convert hours to minutes
+
+        _LOGGER.debug(f"Starting manual daytime simulation for {duration} minutes")  # Debugging log
 
         await self.coordinator.helialux.start_manual_daytime_simulation(duration)
         await self.coordinator.async_refresh()

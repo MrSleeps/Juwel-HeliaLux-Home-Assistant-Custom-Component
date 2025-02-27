@@ -3,11 +3,11 @@
     "step": {
       "user": {
         "title": "Juwel Helialux configureren",
-        "description": "Voer de gegevens van uw aquarium in.",
+        "description": "Voer de details voor uw aquarium in.",
         "data": {
           "tank_protocol": "http of https",
-          "tank_host": "Aquarium Host (IP-adres)",
-          "tank_name": "Aquarium Naam",
+          "tank_host": "Tankhost (IP-adres)",
+          "tank_name": "Tanknaam",
           "update_interval": "Update-interval (1-60 minuten)"
         }
       }
@@ -18,18 +18,18 @@
       "invalid_update_interval": "Ongeldig update-interval opgegeven."
     },
     "abort": {
-      "already_configured": "Dit aquarium is al geconfigureerd."
+      "already_configured": "Deze tank is al geconfigureerd."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Juwel Helialux opnieuw configureren",
-        "description": "Werk de gegevens van uw aquarium bij.",
+        "description": "Werk de details voor uw tank bij.",
         "data": {
           "tank_protocol": "http of https",
-          "tank_host": "Aquarium Host (IP-adres)",
-          "tank_name": "Aquarium Naam",
+          "tank_host": "Tankhost (IP-adres)",
+          "tank_name": "Tanknaam",
           "update_interval": "Update-interval (1-60 minuten)"
         }
       }
@@ -37,19 +37,42 @@
   },
   "entity": {
     "sensor": {
-      "red": { "name": "Rode Lichtintensiteit" },
-      "green": { "name": "Groene Lichtintensiteit" },
-      "blue": { "name": "Blauwe Lichtintensiteit" },
-      "white": { "name": "Witte Lichtintensiteit" },
-      "current_profile": { "name": "Huidig Verlichtingsprofiel" },
-      "manualColorSimulationEnabled": { "name": "Handmatige Kleursimulatie" },
-      "manualDaytimeSimulationEnabled": { "name": "Handmatige Dagtijd Simulatie" },
-      "device_time": { "name": "Apparaattijd" },
-      "profiles": { "name": "Beschikbare Profielen" }
+      "red": { "name": "Rode lichtintensiteit" },
+      "green": { "name": "Groene lichtintensiteit" },
+      "blue": { "name": "Blauwe lichtintensiteit" },
+      "white": { "name": "Witte lichtintensiteit" },
+      "current_profile": { "name": "Huidig verlichtingsprofiel" },
+      "manualColorSimulationEnabled": { "name": "Handmatige kleursimulatie" },
+      "manualDaytimeSimulationEnabled": { "name": "Handmatige dagsimulatie" },
+      "device_time": { "name": "Apparaat tijd" },
+      "profiles": { "name": "Beschikbare profielen" },
+      "combined_sensor": { "name": "Gecombineerde sensor" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Handmatige Kleursimulatie Ingeschakeld" },
-      "manual_daytime_simulation": { "name": "Handmatige Dagtijd Simulatie Ingeschakeld" }
+      "manual_color_simulation": { "name": "Handmatige kleursimulatie ingeschakeld" },
+      "manual_daytime_simulation": { "name": "Handmatige dagsimulatie ingeschakeld" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Duur handmatige kleursimulatie (uren)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Duur handmatige dagsimulatie (uren)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Handmatige kleursimulatie" },
+      "manual_daytime_simulation": { "name": "Handmatige dagsimulatie" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Licht"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profiel"
+      }
     }
   }
 }
