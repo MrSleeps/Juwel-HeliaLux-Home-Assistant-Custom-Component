@@ -2,54 +2,77 @@
   "config": {
     "step": {
       "user": {
-        "title": "Konfiguracja Juwel Helialux",
-        "description": "Wprowadź szczegóły swojego akwarium.",
+        "title": "Skonfiguruj Juwel Helialux",
+        "description": "Wprowadź szczegóły dla swojego zbiornika.",
         "data": {
           "tank_protocol": "http lub https",
-          "tank_host": "Host Akwarium (Adres IP)",
-          "tank_name": "Nazwa Akwarium",
-          "update_interval": "Interwał Aktualizacji (1-60 minut)"
+          "tank_host": "Host zbiornika (adres IP)",
+          "tank_name": "Nazwa zbiornika",
+          "update_interval": "Interwał aktualizacji (1-60 minut)"
         }
       }
     },
     "error": {
-      "invalid_host": "Nieprawidłowy host.",
-      "invalid_name": "Nieprawidłowa nazwa.",
-      "invalid_update_interval": "Nieprawidłowy interwał aktualizacji."
+      "invalid_host": "Podano nieprawidłowy host.",
+      "invalid_name": "Podano nieprawidłową nazwę.",
+      "invalid_update_interval": "Podano nieprawidłowy interwał aktualizacji."
     },
     "abort": {
-      "already_configured": "To akwarium jest już skonfigurowane."
+      "already_configured": "Ten zbiornik jest już skonfigurowany."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Ponowna konfiguracja Juwel Helialux",
-        "description": "Zaktualizuj szczegóły swojego akwarium.",
+        "title": "Ponownie skonfiguruj Juwel Helialux",
+        "description": "Zaktualizuj szczegóły swojego zbiornika.",
         "data": {
           "tank_protocol": "http lub https",
-          "tank_host": "Host Akwarium (Adres IP)",
-          "tank_name": "Nazwa Akwarium",
-          "update_interval": "Interwał Aktualizacji (1-60 minut)"
+          "tank_host": "Host zbiornika (adres IP)",
+          "tank_name": "Nazwa zbiornika",
+          "update_interval": "Interwał aktualizacji (1-60 minut)"
         }
       }
     }
   },
   "entity": {
     "sensor": {
-      "red": { "name": "Intensywność Czerwonego Światła" },
-      "green": { "name": "Intensywność Zielonego Światła" },
-      "blue": { "name": "Intensywność Niebieskiego Światła" },
-      "white": { "name": "Intensywność Białego Światła" },
-      "current_profile": { "name": "Bieżący Profil Oświetlenia" },
-      "manualColorSimulationEnabled": { "name": "Ręczna Symulacja Koloru" },
-      "manualDaytimeSimulationEnabled": { "name": "Ręczna Symulacja Pory Dnia" },
-      "device_time": { "name": "Czas Urządzenia" },
-      "profiles": { "name": "Dostępne Profile" }
+      "red": { "name": "Intensywność światła czerwonego" },
+      "green": { "name": "Intensywność światła zielonego" },
+      "blue": { "name": "Intensywność światła niebieskiego" },
+      "white": { "name": "Intensywność światła białego" },
+      "current_profile": { "name": "Aktualny profil oświetlenia" },
+      "manualColorSimulationEnabled": { "name": "Ręczna symulacja koloru" },
+      "manualDaytimeSimulationEnabled": { "name": "Ręczna symulacja dzienna" },
+      "device_time": { "name": "Czas urządzenia" },
+      "profiles": { "name": "Dostępne profile" },
+      "combined_sensor": { "name": "Czujnik połączony" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Ręczna Symulacja Koloru Włączona" },
-      "manual_daytime_simulation": { "name": "Ręczna Symulacja Pory Dnia Włączona" }
+      "manual_color_simulation": { "name": "Ręczna symulacja koloru włączona" },
+      "manual_daytime_simulation": { "name": "Ręczna symulacja dzienna włączona" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Czas trwania ręcznej symulacji koloru (godziny)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Czas trwania ręcznej symulacji dziennej (godziny)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Ręczna symulacja koloru" },
+      "manual_daytime_simulation": { "name": "Ręczna symulacja dzienna" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Światło"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profil"
+      }
     }
   }
 }

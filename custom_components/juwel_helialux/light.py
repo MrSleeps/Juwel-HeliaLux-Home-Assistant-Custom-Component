@@ -26,9 +26,9 @@ async def async_setup_entry(
         _LOGGER.error("Coordinator is missing the 'helialux' attribute!")
         return
 
-    await coordinator.async_config_entry_first_refresh()  # Ensures data is fetched before adding entities
+    await coordinator.async_config_entry_first_refresh()
 
-    _LOGGER.debug("Coordinator initial data: %s", coordinator.data)  # Log data
+    _LOGGER.debug("Coordinator initial data: %s", coordinator.data)
 
     tank_name = entry.title
     async_add_entities([JuwelHelialuxLight(coordinator, tank_name)], True)
@@ -40,20 +40,16 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
     def __init__(self, coordinator, tank_name):
         """Initialize the light entity."""
         super().__init__(coordinator)#
-        # Use the 'self.helialux' from the coordinator
-        self._controller = coordinator.helialux  # Using the existing 'Helialux' instance
-        # Set the name and unique ID to follow the desired format
-        self._attr_name = f"{tank_name} Light"
-        self._attr_unique_id = f"{tank_name.lower().replace(' ', '_')}_light"  # Ensure unique ID follows the naming convention
-        # Explicitly set the entity ID to follow the desired format
-        self.entity_id = f"light.{self._attr_unique_id}"  # This will result in light.tank_name_light
-        # Supported color modes
+        self._controller = coordinator.helialux
+        self._attr_unique_id = f"{tank_name.lower().replace(' ', '_')}_light"
+        self.entity_id = f"light.{self._attr_unique_id}"
+        self._attr_has_entity_name = True 
+        self._attr_translation_key = "light_name"
         self._attr_supported_color_modes = {ColorMode.RGBW}
         self._attr_color_mode = ColorMode.RGBW
         self._attr_is_on = False
         self._attr_brightness = None
         self._attr_rgbw_color = (0, 0, 0, 0)
-        # Use the coordinator's device_info
         self._attr_device_info = coordinator.device_info
 
 
@@ -63,14 +59,11 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         if not self.coordinator.data:
             _LOGGER.warning("Coordinator data is None, returning False for is_on")
             return False
-
-        # Check if any of the RGBW values are greater than 0
         raw_red = self.coordinator.data.get("red", 0)
         raw_green = self.coordinator.data.get("green", 0)
         raw_blue = self.coordinator.data.get("blue", 0)
         raw_white = self.coordinator.data.get("white", 0)
 
-        # Return True if any of the RGBW values are greater than 0, else False
         return raw_red > 0 or raw_green > 0 or raw_blue > 0 or raw_white > 0
 
     @property
@@ -79,8 +72,6 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         if not self.coordinator.data:
             _LOGGER.warning("Coordinator data is None, returning default RGBW (0,0,0,0)")
             return (0, 0, 0, 0)
-
-        # Corrected key names
         raw_red = self.coordinator.data.get("red", 0)
         raw_green = self.coordinator.data.get("green", 0)
         raw_blue = self.coordinator.data.get("blue", 0)
@@ -96,7 +87,6 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         converted_blue = int(raw_blue * 2.55)
         converted_white = int(raw_white * 2.55)
 
-        # Return the RGBW values
         return (converted_red, converted_green, converted_blue, converted_white)
 
     @property
@@ -106,7 +96,6 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
             _LOGGER.warning("Coordinator data is None, returning default brightness 0")
             return 0
 
-        # Get the RGBW values
         raw_red = self.coordinator.data.get("red", 0)
         raw_green = self.coordinator.data.get("green", 0)
         raw_blue = self.coordinator.data.get("blue", 0)
@@ -138,7 +127,7 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         brightness_juwel = brightness * 2.55
 
         # Calculate the scaling factor for RGBW values based on brightness
-        scale_factor = brightness_juwel / 100.0  # scale to range [0, 1]
+        scale_factor = brightness_juwel / 100.0
 
         # Convert RGBW values (0-255) to Juwel's (0-100)
         red, green, blue, white = (
@@ -164,7 +153,7 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         )
 
         # Now set the manual color with the adjusted values
-        await self._controller.start_manual_color_simulation(1439)  # Ensure it's running
+        await self._controller.start_manual_color_simulation(1439)
         await self._controller.set_manual_color(white, blue, green, red)
 
         # Update the state
@@ -177,12 +166,8 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
         _LOGGER.debug("Turning off Juwel Helialux light")
-
-        # Stop manual color simulation before setting colors to zero
         await self._controller.start_manual_color_simulation(1439)
         await self._controller.set_manual_color(0, 0, 0, 0)
-
-        # Update the state
         self._attr_is_on = False
         self._attr_brightness = 0
         self._attr_rgbw_color = (0, 0, 0, 0)

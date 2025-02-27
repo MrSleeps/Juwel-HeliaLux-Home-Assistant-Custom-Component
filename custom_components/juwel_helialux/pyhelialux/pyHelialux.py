@@ -197,14 +197,18 @@ class Controller:
             return {}
 
         try:
-            return {
-                "device_type": parsed_devvars["info"][0] if len(parsed_devvars["info"]) > 0 else "Unknown",
-                "hardware_version": parsed_devvars["info"][1] if len(parsed_devvars["info"]) > 1 else "Unknown",
-                "firmware_version": parsed_devvars["info"][2] if len(parsed_devvars["info"]) > 2 else "Unknown",
+            device_type = f"{parsed_devvars['info'][0]} {parsed_statusvars.get('lamp', 'Unknown')}"
+            device_info = {
+#                "device_type": parsed_devvars["info"][0] if len(parsed_devvars["info"]) > 0 else "Unknown",
+                "device_type": device_type if len(parsed_devvars["info"]) > 0 else "Unknown",
+                "hardware_version": parsed_devvars["info"][1].lstrip('V') if len(parsed_devvars["info"]) > 1 else "Unknown",
+                "firmware_version": parsed_devvars["info"][2].lstrip('V') if len(parsed_devvars["info"]) > 2 else "Unknown",
                 "ip_address": parsed_devvars["info"][3] if len(parsed_devvars["info"]) > 3 else "Unknown",
                 "mac_address": parsed_devvars["info"][4] if len(parsed_devvars["info"]) > 4 else "Unknown",
                 "light_channels": parsed_statusvars.get("lamp", "Unknown"),
             }
+            _LOGGER.debug(f"Device info: {device_info}")  # Debug log
+            return device_info
         except KeyError as e:
             _LOGGER.error(f"Missing key in parsed data: {e}")
             return {}
@@ -302,3 +306,52 @@ class Controller:
         except Exception as e:
             _LOGGER.error(f"Error setting profile: {e}")
             return False
+        
+    async def start_manual_daytime_simulation(self, duration=60):
+        """Start manual daytime simulation asynchronously."""
+        session = await self._get_session()
+        url = f"{self._url}/stat"
+        
+        # Convert duration from minutes to hours:minutes format
+        hours = duration // 60
+        minutes = duration % 60
+        ttime = f"{hours:02d}:{minutes:02d}"  # Format as HH:MM
+        
+        data = {
+            "action": 12,  # Action for daytime simulation
+            "tswi": "true",  # Enable daytime simulation
+            "ttime": ttime,  # Duration in HH:MM format
+            "cswi": "false",  # Ensure color simulation is off
+            "ctime": "01:00",  # Default color simulation time (not used)
+            "pwdWarn": 0  # Password warning (if applicable)
+        }
+        
+        try:
+            _LOGGER.debug(f"Starting manual daytime simulation with data: {data}")
+            async with session.post(url, data=data) as response:
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to start manual daytime simulation: {response.status}")
+        except Exception as e:
+            _LOGGER.error(f"Error starting manual daytime simulation: {e}")
+
+    async def stop_manual_daytime_simulation(self):
+        """Stop manual daytime simulation asynchronously."""
+        session = await self._get_session()
+        url = f"{self._url}/stat"
+        
+        data = {
+            "action": 12,  # Action for daytime simulation
+            "tswi": "false",  # Disable daytime simulation
+            "ttime": "01:00",  # Default time (not used)
+            "cswi": "false",  # Ensure color simulation is off
+            "ctime": "01:00",  # Default color simulation time (not used)
+            "pwdWarn": 0  # Password warning (if applicable)
+        }
+        
+        try:
+            _LOGGER.debug(f"Stopping manual daytime simulation with data: {data}")
+            async with session.post(url, data=data) as response:
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to stop manual daytime simulation: {response.status}")
+        except Exception as e:
+            _LOGGER.error(f"Error stopping manual daytime simulation: {e}")
