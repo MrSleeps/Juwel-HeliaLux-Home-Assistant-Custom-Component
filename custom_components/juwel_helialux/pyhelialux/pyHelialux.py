@@ -302,3 +302,52 @@ class Controller:
         except Exception as e:
             _LOGGER.error(f"Error setting profile: {e}")
             return False
+        
+    async def start_manual_daytime_simulation(self, duration=60):
+        """Start manual daytime simulation asynchronously."""
+        session = await self._get_session()
+        url = f"{self._url}/stat"
+        
+        # Convert duration from minutes to hours:minutes format
+        hours = duration // 60
+        minutes = duration % 60
+        ttime = f"{hours:02d}:{minutes:02d}"  # Format as HH:MM
+        
+        data = {
+            "action": 12,  # Action for daytime simulation
+            "tswi": "true",  # Enable daytime simulation
+            "ttime": ttime,  # Duration in HH:MM format
+            "cswi": "false",  # Ensure color simulation is off
+            "ctime": "01:00",  # Default color simulation time (not used)
+            "pwdWarn": 0  # Password warning (if applicable)
+        }
+        
+        try:
+            _LOGGER.debug(f"Starting manual daytime simulation with data: {data}")
+            async with session.post(url, data=data) as response:
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to start manual daytime simulation: {response.status}")
+        except Exception as e:
+            _LOGGER.error(f"Error starting manual daytime simulation: {e}")
+
+    async def stop_manual_daytime_simulation(self):
+        """Stop manual daytime simulation asynchronously."""
+        session = await self._get_session()
+        url = f"{self._url}/stat"
+        
+        data = {
+            "action": 12,  # Action for daytime simulation
+            "tswi": "false",  # Disable daytime simulation
+            "ttime": "01:00",  # Default time (not used)
+            "cswi": "false",  # Ensure color simulation is off
+            "ctime": "01:00",  # Default color simulation time (not used)
+            "pwdWarn": 0  # Password warning (if applicable)
+        }
+        
+        try:
+            _LOGGER.debug(f"Stopping manual daytime simulation with data: {data}")
+            async with session.post(url, data=data) as response:
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to stop manual daytime simulation: {response.status}")
+        except Exception as e:
+            _LOGGER.error(f"Error stopping manual daytime simulation: {e}")

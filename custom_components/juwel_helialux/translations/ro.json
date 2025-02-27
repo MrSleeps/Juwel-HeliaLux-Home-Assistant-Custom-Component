@@ -2,34 +2,34 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configurare Juwel Helialux",
-        "description": "Introduceți detaliile acvariului dvs.",
+        "title": "Configurează Juwel Helialux",
+        "description": "Introduceți detaliile pentru rezervorul dvs.",
         "data": {
           "tank_protocol": "http sau https",
-          "tank_host": "Gazdă acvariu (adresa IP)",
-          "tank_name": "Numele acvariului",
+          "tank_host": "Gazda rezervorului (adresă IP)",
+          "tank_name": "Numele rezervorului",
           "update_interval": "Interval de actualizare (1-60 minute)"
         }
       }
     },
     "error": {
-      "invalid_host": "Gazdă invalidă.",
-      "invalid_name": "Nume invalid.",
-      "invalid_update_interval": "Interval de actualizare invalid."
+      "invalid_host": "Gazda furnizată este invalidă.",
+      "invalid_name": "Numele furnizat este invalid.",
+      "invalid_update_interval": "Intervalul de actualizare furnizat este invalid."
     },
     "abort": {
-      "already_configured": "Acest acvariu este deja configurat."
+      "already_configured": "Acest rezervor este deja configurat."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Reconfigurare Juwel Helialux",
-        "description": "Actualizați detaliile acvariului dvs.",
+        "title": "Reconfigurează Juwel Helialux",
+        "description": "Actualizează detaliile pentru rezervorul tău.",
         "data": {
           "tank_protocol": "http sau https",
-          "tank_host": "Gazdă acvariu (adresa IP)",
-          "tank_name": "Numele acvariului",
+          "tank_host": "Gazda rezervorului (adresă IP)",
+          "tank_name": "Numele rezervorului",
           "update_interval": "Interval de actualizare (1-60 minute)"
         }
       }
@@ -42,14 +42,37 @@
       "blue": { "name": "Intensitate lumină albastră" },
       "white": { "name": "Intensitate lumină albă" },
       "current_profile": { "name": "Profil de iluminare curent" },
-      "manualColorSimulationEnabled": { "name": "Simulare manuală a culorii" },
-      "manualDaytimeSimulationEnabled": { "name": "Simulare manuală a zilei" },
-      "device_time": { "name": "Ora dispozitivului" },
-      "profiles": { "name": "Profiluri disponibile" }
+      "manualColorSimulationEnabled": { "name": "Simulare manuală de culoare" },
+      "manualDaytimeSimulationEnabled": { "name": "Simulare manuală de zi" },
+      "device_time": { "name": "Timpul dispozitivului" },
+      "profiles": { "name": "Profile disponibile" },
+      "combined_sensor": { "name": "Senzor combinat" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Simulare manuală a culorii activată" },
-      "manual_daytime_simulation": { "name": "Simulare manuală a zilei activată (Test)" }
+      "manual_color_simulation": { "name": "Simulare manuală de culoare activată" },
+      "manual_daytime_simulation": { "name": "Simulare manuală de zi activată" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Durata simulării manuale de culoare (ore)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Durata simulării manuale de zi (ore)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Simulare manuală de culoare" },
+      "manual_daytime_simulation": { "name": "Simulare manuală de zi" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Lumină"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profil"
+      }
     }
   }
 }

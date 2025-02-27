@@ -17,6 +17,17 @@ branches:
 exclude-labels:
   - 'Skip changelog'
 no-changes-template: 'This release contains minor changes and bugfixes.'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
 template: |
   # Release Notes
 

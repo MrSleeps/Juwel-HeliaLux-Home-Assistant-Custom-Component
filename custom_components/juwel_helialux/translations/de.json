@@ -6,8 +6,8 @@
         "description": "Geben Sie die Details für Ihr Aquarium ein.",
         "data": {
           "tank_protocol": "http oder https",
-          "tank_host": "Aquarium-Host (IP-Adresse)",
-          "tank_name": "Aquarium-Name",
+          "tank_host": "Tank Host (IP-Adresse)",
+          "tank_name": "Tankname",
           "update_interval": "Aktualisierungsintervall (1-60 Minuten)"
         }
       }
@@ -18,18 +18,18 @@
       "invalid_update_interval": "Ungültiges Aktualisierungsintervall angegeben."
     },
     "abort": {
-      "already_configured": "Dieses Aquarium ist bereits konfiguriert."
+      "already_configured": "Dieser Tank ist bereits konfiguriert."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Juwel Helialux neu konfigurieren",
-        "description": "Aktualisieren Sie die Details für Ihr Aquarium.",
+        "description": "Aktualisieren Sie die Details für Ihren Tank.",
         "data": {
           "tank_protocol": "http oder https",
-          "tank_host": "Aquarium-Host (IP-Adresse)",
-          "tank_name": "Aquarium-Name",
+          "tank_host": "Tank Host (IP-Adresse)",
+          "tank_name": "Tankname",
           "update_interval": "Aktualisierungsintervall (1-60 Minuten)"
         }
       }
@@ -41,15 +41,38 @@
       "green": { "name": "Grüne Lichtintensität" },
       "blue": { "name": "Blaue Lichtintensität" },
       "white": { "name": "Weiße Lichtintensität" },
-      "current_profile": { "name": "Aktuelles Lichtprofil" },
+      "current_profile": { "name": "Aktuelles Beleuchtungsprofil" },
       "manualColorSimulationEnabled": { "name": "Manuelle Farbsimulation" },
-      "manualDaytimeSimulationEnabled": { "name": "Manuelle Tageszeitsimulation" },
+      "manualDaytimeSimulationEnabled": { "name": "Manuelle Tagsimulation" },
       "device_time": { "name": "Gerätezeit" },
-      "profiles": { "name": "Verfügbare Profile" }
+      "profiles": { "name": "Verfügbare Profile" },
+      "combined_sensor": { "name": "Kombinierter Sensor" }
     },
     "binary_sensor": {
       "manual_color_simulation": { "name": "Manuelle Farbsimulation aktiviert" },
-      "manual_daytime_simulation": { "name": "Manuelle Tageszeitsimulation aktiviert" }
+      "manual_daytime_simulation": { "name": "Manuelle Tagsimulation aktiviert" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Dauer der manuellen Farbsimulation (Stunden)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Dauer der manuellen Tagsimulation (Stunden)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Manuelle Farbsimulation" },
+      "manual_daytime_simulation": { "name": "Manuelle Tagsimulation" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Licht"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profil"
+      }
     }
   }
 }

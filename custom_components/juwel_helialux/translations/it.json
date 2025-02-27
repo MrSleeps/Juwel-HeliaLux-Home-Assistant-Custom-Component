@@ -3,53 +3,76 @@
     "step": {
       "user": {
         "title": "Configura Juwel Helialux",
-        "description": "Inserisci i dettagli del tuo acquario.",
+        "description": "Inserisci i dettagli per il tuo acquario.",
         "data": {
           "tank_protocol": "http o https",
-          "tank_host": "Host dell'Acquario (Indirizzo IP)",
-          "tank_name": "Nome dell'Acquario",
-          "update_interval": "Intervallo di Aggiornamento (1-60 minuti)"
+          "tank_host": "Ospite del serbatoio (indirizzo IP)",
+          "tank_name": "Nome del serbatoio",
+          "update_interval": "Intervallo di aggiornamento (1-60 minuti)"
         }
       }
     },
     "error": {
-      "invalid_host": "Host non valido.",
-      "invalid_name": "Nome non valido.",
-      "invalid_update_interval": "Intervallo di aggiornamento non valido."
+      "invalid_host": "Host non valido fornito.",
+      "invalid_name": "Nome non valido fornito.",
+      "invalid_update_interval": "Intervallo di aggiornamento non valido fornito."
     },
     "abort": {
-      "already_configured": "Questo acquario è già configurato."
+      "already_configured": "Questo serbatoio è già configurato."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Riconfigura Juwel Helialux",
-        "description": "Aggiorna i dettagli del tuo acquario.",
+        "title": "Reconfigura Juwel Helialux",
+        "description": "Aggiorna i dettagli per il tuo serbatoio.",
         "data": {
           "tank_protocol": "http o https",
-          "tank_host": "Host dell'Acquario (Indirizzo IP)",
-          "tank_name": "Nome dell'Acquario",
-          "update_interval": "Intervallo di Aggiornamento (1-60 minuti)"
+          "tank_host": "Ospite del serbatoio (indirizzo IP)",
+          "tank_name": "Nome del serbatoio",
+          "update_interval": "Intervallo di aggiornamento (1-60 minuti)"
         }
       }
     }
   },
   "entity": {
     "sensor": {
-      "red": { "name": "Intensità Luce Rossa" },
-      "green": { "name": "Intensità Luce Verde" },
-      "blue": { "name": "Intensità Luce Blu" },
-      "white": { "name": "Intensità Luce Bianca" },
-      "current_profile": { "name": "Profilo Illuminazione Corrente" },
-      "manualColorSimulationEnabled": { "name": "Simulazione Manuale Colore" },
-      "manualDaytimeSimulationEnabled": { "name": "Simulazione Manuale Giorno/Notte" },
-      "device_time": { "name": "Ora del Dispositivo" },
-      "profiles": { "name": "Profili Disponibili" }
+      "red": { "name": "Intensità della luce rossa" },
+      "green": { "name": "Intensità della luce verde" },
+      "blue": { "name": "Intensità della luce blu" },
+      "white": { "name": "Intensità della luce bianca" },
+      "current_profile": { "name": "Profilo di illuminazione attuale" },
+      "manualColorSimulationEnabled": { "name": "Simulazione manuale del colore" },
+      "manualDaytimeSimulationEnabled": { "name": "Simulazione manuale diurna" },
+      "device_time": { "name": "Ora del dispositivo" },
+      "profiles": { "name": "Profili disponibili" },
+      "combined_sensor": { "name": "Sensore combinato" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Simulazione Manuale Colore Attivata" },
-      "manual_daytime_simulation": { "name": "Simulazione Manuale Giorno/Notte Attivata" }
+      "manual_color_simulation": { "name": "Simulazione manuale del colore attivata" },
+      "manual_daytime_simulation": { "name": "Simulazione manuale diurna attivata" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Durata della simulazione manuale del colore (ore)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Durata della simulazione manuale diurna (ore)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Simulazione manuale del colore" },
+      "manual_daytime_simulation": { "name": "Simulazione manuale diurna" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Luce"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profilo"
+      }
     }
   }
 }

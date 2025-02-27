@@ -2,54 +2,77 @@
   "config": {
     "step": {
       "user": {
-        "title": "Ρύθμιση Juwel Helialux",
+        "title": "Ρυθμίστε το Juwel Helialux",
         "description": "Εισαγάγετε τις λεπτομέρειες για τη δεξαμενή σας.",
         "data": {
           "tank_protocol": "http ή https",
-          "tank_host": "Διεύθυνση Host (Διεύθυνση IP)",
-          "tank_name": "Όνομα Δεξαμενής",
-          "update_interval": "Διάστημα Ενημέρωσης (1-60 λεπτά)"
+          "tank_host": "Φιλοξενητής δεξαμενής (διεύθυνση IP)",
+          "tank_name": "Όνομα δεξαμενής",
+          "update_interval": "Διάστημα ενημέρωσης (1-60 λεπτά)"
         }
       }
     },
     "error": {
-      "invalid_host": "Μη έγκυρη διεύθυνση host.",
-      "invalid_name": "Μη έγκυρο όνομα.",
-      "invalid_update_interval": "Μη έγκυρο διάστημα ενημέρωσης."
+      "invalid_host": "Παρέχεται μη έγκυρος οικοδεσπότης.",
+      "invalid_name": "Παρέχεται μη έγκυρο όνομα.",
+      "invalid_update_interval": "Παρέχεται μη έγκυρο διάστημα ενημέρωσης."
     },
     "abort": {
-      "already_configured": "Αυτή η δεξαμενή έχει ήδη ρυθμιστεί."
+      "already_configured": "Αυτή η δεξαμενή είναι ήδη ρυθμισμένη."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Επαναρύθμιση Juwel Helialux",
+        "title": "Επαναρυθμίστε το Juwel Helialux",
         "description": "Ενημερώστε τις λεπτομέρειες για τη δεξαμενή σας.",
         "data": {
           "tank_protocol": "http ή https",
-          "tank_host": "Διεύθυνση Host (Διεύθυνση IP)",
-          "tank_name": "Όνομα Δεξαμενής",
-          "update_interval": "Διάστημα Ενημέρωσης (1-60 λεπτά)"
+          "tank_host": "Φιλοξενητής δεξαμενής (διεύθυνση IP)",
+          "tank_name": "Όνομα δεξαμενής",
+          "update_interval": "Διάστημα ενημέρωσης (1-60 λεπτά)"
         }
       }
     }
   },
   "entity": {
     "sensor": {
-      "red": { "name": "Ένταση Κόκκινου Φωτός" },
-      "green": { "name": "Ένταση Πράσινου Φωτός" },
-      "blue": { "name": "Ένταση Μπλε Φωτός" },
-      "white": { "name": "Ένταση Λευκού Φωτός" },
-      "current_profile": { "name": "Τρέχον Πρόφίλ Φωτισμού" },
-      "manualColorSimulationEnabled": { "name": "Προσομοίωση Χειροκίνητου Χρώματος" },
-      "manualDaytimeSimulationEnabled": { "name": "Προσομοίωση Χειροκίνητης Ώρας" },
-      "device_time": { "name": "Ώρα Συσκευής" },
-      "profiles": { "name": "Διαθέσιμα Πρόφιλ" }
+      "red": { "name": "Ένταση κόκκινου φωτός" },
+      "green": { "name": "Ένταση πράσινου φωτός" },
+      "blue": { "name": "Ένταση μπλε φωτός" },
+      "white": { "name": "Ένταση λευκού φωτός" },
+      "current_profile": { "name": "Τρέχον προφίλ φωτισμού" },
+      "manualColorSimulationEnabled": { "name": "Χειροκίνητη προσομοίωση χρώματος" },
+      "manualDaytimeSimulationEnabled": { "name": "Χειροκίνητη προσομοίωση ημέρας" },
+      "device_time": { "name": "Χρόνος συσκευής" },
+      "profiles": { "name": "Διαθέσιμα προφίλ" },
+      "combined_sensor": { "name": "Συνδυασμένος αισθητήρας" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Ενεργοποιημένη Προσομοίωση Χειροκίνητου Χρώματος" },
-      "manual_daytime_simulation": { "name": "Ενεργοποιημένη Προσομοίωση Χειροκίνητης Ώρας" }
+      "manual_color_simulation": { "name": "Ενεργοποιημένη χειροκίνητη προσομοίωση χρώματος" },
+      "manual_daytime_simulation": { "name": "Ενεργοποιημένη χειροκίνητη προσομοίωση ημέρας" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Διάρκεια χειροκίνητης προσομοίωσης χρώματος (ώρες)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Διάρκεια χειροκίνητης προσομοίωσης ημέρας (ώρες)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Χειροκίνητη προσομοίωση χρώματος" },
+      "manual_daytime_simulation": { "name": "Χειροκίνητη προσομοίωση ημέρας" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Φως"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Προφίλ"
+      }
     }
   }
 }

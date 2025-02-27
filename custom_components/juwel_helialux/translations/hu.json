@@ -2,54 +2,77 @@
   "config": {
     "step": {
       "user": {
-        "title": "Juwel Helialux konfigurálása",
-        "description": "Adja meg a Akvárium adatait.",
+        "title": "Juwel Helialux beállítása",
+        "description": "Adja meg az akvárium részleteit.",
         "data": {
           "tank_protocol": "http vagy https",
-          "tank_host": "Akvárium gazdagép (IP-cím)",
-          "tank_name": "Akvárium neve",
-          "update_interval": "Frissítési intervallum (1-60 perc)"
+          "tank_host": "Tartály gazda (IP-cím)",
+          "tank_name": "Tartály neve",
+          "update_interval": "Frissítési időköz (1-60 perc)"
         }
       }
     },
     "error": {
-      "invalid_host": "Érvénytelen gazdagép megadva.",
+      "invalid_host": "Érvénytelen gazda megadva.",
       "invalid_name": "Érvénytelen név megadva.",
-      "invalid_update_interval": "Érvénytelen frissítési intervallum megadva."
+      "invalid_update_interval": "Érvénytelen frissítési időköz megadva."
     },
     "abort": {
-      "already_configured": "Ez a Akvárium már konfigurálva van."
+      "already_configured": "Ez a tartály már be van állítva."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Juwel Helialux újrakonfigurálása",
-        "description": "Frissítse a Akvárium adatait.",
+        "description": "Frissítse a tartály részleteit.",
         "data": {
           "tank_protocol": "http vagy https",
-          "tank_host": "Akvárium gazdagép (IP-cím)",
-          "tank_name": "Akvárium neve",
-          "update_interval": "Frissítési intervallum (1-60 perc)"
+          "tank_host": "Tartály gazda (IP-cím)",
+          "tank_name": "Tartály neve",
+          "update_interval": "Frissítési időköz (1-60 perc)"
         }
       }
     }
   },
   "entity": {
     "sensor": {
-      "red": { "name": "Piros fényintenzitás" },
-      "green": { "name": "Zöld fényintenzitás" },
-      "blue": { "name": "Kék fényintenzitás" },
-      "white": { "name": "Fehér fényintenzitás" },
-      "current_profile": { "name": "Jelenlegi világítási profil" },
-      "manualColorSimulationEnabled": { "name": "Manuális színszimuláció" },
-      "manualDaytimeSimulationEnabled": { "name": "Manuális nappali szimuláció" },
-      "device_time": { "name": "Eszköz ideje" },
-      "profiles": { "name": "Elérhető profilok" }
+      "red": { "name": "Piros fény intenzitás" },
+      "green": { "name": "Zöld fény intenzitás" },
+      "blue": { "name": "Kék fény intenzitás" },
+      "white": { "name": "Fehér fény intenzitás" },
+      "current_profile": { "name": "Aktuális világítási profil" },
+      "manualColorSimulationEnabled": { "name": "Kézi színszimuláció" },
+      "manualDaytimeSimulationEnabled": { "name": "Kézi nappali szimuláció" },
+      "device_time": { "name": "Eszközidő" },
+      "profiles": { "name": "Elérhető profilok" },
+      "combined_sensor": { "name": "Kombinált érzékelő" }
     },
     "binary_sensor": {
-      "manual_color_simulation": { "name": "Manuális színszimuláció engedélyezve" },
-      "manual_daytime_simulation": { "name": "Manuális nappali szimuláció engedélyezve (Teszt)" }
+      "manual_color_simulation": { "name": "Kézi színszimuláció engedélyezve" },
+      "manual_daytime_simulation": { "name": "Kézi nappali szimuláció engedélyezve" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Kézi színszimuláció időtartama (órák)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Kézi nappali szimuláció időtartama (órák)"
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Kézi színszimuláció" },
+      "manual_daytime_simulation": { "name": "Kézi nappali szimuláció" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Fény"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profil"
+      }
     }
   }
 }
