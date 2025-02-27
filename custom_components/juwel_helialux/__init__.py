@@ -1,17 +1,17 @@
-from homeassistant.core import HomeAssistant  # Add this line
-from homeassistant.config_entries import ConfigEntry  # Add this line
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
 from .sensor import JuwelHelialuxCoordinator 
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
 import logging
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup(hass, config):
-    hass.data.setdefault(DOMAIN, {})  # Ensure DOMAIN is always in hass.data
+    hass.data.setdefault(DOMAIN, {})
     return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up a config entry for the Juwel Helialux integration."""
-    _LOGGER.debug("Setting up config entry: %s", entry.entry_id)  # Log entry setup
+    _LOGGER.debug("Setting up config entry: %s", entry.entry_id)
 
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
@@ -22,10 +22,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     update_interval = entry.options.get("update_interval", 30)
     coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, tank_name, update_interval)
     await coordinator.async_config_entry_first_refresh()
-    hass.data[DOMAIN][entry.entry_id] = coordinator  # Store it
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
     _LOGGER.debug("Forwarding setup for binary_sensor platform")
-    # Add logging to confirm forwarding
     try:
         await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "light", "select", "binary_sensor","number","switch"])
         _LOGGER.debug("Binary sensor setup forwarded successfully.")

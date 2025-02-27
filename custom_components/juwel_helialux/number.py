@@ -25,15 +25,15 @@ class HelialuxNumberEntity(NumberEntity):
     def __init__(self, coordinator, entry, tank_name, tank_id, attribute, min_value, max_value, default_value):
         self.coordinator = coordinator
         self.entry = entry
-        self.tank_name = tank_name  # Store tank_name for display (original casing)
-        self.tank_id = tank_id  # Store tank_id for entity ID (lowercase)
-        self._attr_native_step = 0.5  # Step increment in minutes
-        self._attr_native_unit_of_measurement = UnitOfTime.MINUTES
-        self._state = default_value  # Set the default duration
-        self._attr_has_entity_name = True  # Enable automatic prefixing of tank_name
+        self.tank_name = tank_name
+        self.tank_id = tank_id
+        self._attr_native_step = 0.5  # Step increment in hours
+        self._attr_native_unit_of_measurement = UnitOfTime.HOURS
+        self._state = default_value
+        self._attr_has_entity_name = True
         self._attr_unique_id = f"{entry.entry_id}_{attribute}_duration"
-        self._attr_native_min_value = min_value  # Minimum value
-        self._attr_native_max_value = max_value  # Maximum value
+        self._attr_native_min_value = min_value
+        self._attr_native_max_value = max_value
         self.entity_id = f"number.{tank_id}_{attribute}_duration"
         self._attr_device_info = coordinator.device_info
         self._attr_translation_key = f"{attribute}_duration"
@@ -46,7 +46,7 @@ class HelialuxNumberEntity(NumberEntity):
     async def async_set_native_value(self, value):
         """Set the duration value."""
         self._state = int(value)
-        self.async_write_ha_state()  # Ensure HA UI updates the new value
+        self.async_write_ha_state()
         _LOGGER.debug(f"Set {self.entity_id} to {value} minutes")
 
     async def async_update(self):
@@ -56,22 +56,22 @@ class HelialuxNumberEntity(NumberEntity):
 
     def _update_state(self):
         """Update internal state from coordinator data."""
-        self._state = self.native_value  # Use the stored value instead of raising an error
+        self._state = self.native_value
 
 
 class HelialuxColorSimulationDuration(HelialuxNumberEntity):
     """Number entity for setting the manual color simulation duration."""
 
     def __init__(self, coordinator, entry, tank_name, tank_id):
-        min_value = entry.data.get("color_simulation_min", 1)  # Fetch from configuration
-        max_value = entry.data.get("color_simulation_max", 24)  # Fetch from configuration
-        super().__init__(coordinator, entry, tank_name, tank_id, "manual_color_simulation", min_value, max_value, 60)
+        min_value = entry.data.get("color_simulation_min", 1)
+        max_value = entry.data.get("color_simulation_max", 24)
+        super().__init__(coordinator, entry, tank_name, tank_id, "manual_color_simulation", min_value, max_value, 12)
 
 
 class HelialuxDaytimeSimulationDuration(HelialuxNumberEntity):
     """Number entity for setting the manual daytime simulation duration."""
 
     def __init__(self, coordinator, entry, tank_name, tank_id):
-        min_value = entry.data.get("daytime_simulation_min", 1)  # Fetch from configuration
-        max_value = entry.data.get("daytime_simulation_max", 24)  # Fetch from configuration
-        super().__init__(coordinator, entry, tank_name, tank_id, "manual_daytime_simulation", min_value, max_value, 60)
+        min_value = entry.data.get("daytime_simulation_min", 1)
+        max_value = entry.data.get("daytime_simulation_max", 24)
+        super().__init__(coordinator, entry, tank_name, tank_id, "manual_daytime_simulation", min_value, max_value, 12)
