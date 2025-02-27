@@ -197,14 +197,18 @@ class Controller:
             return {}
 
         try:
-            return {
-                "device_type": parsed_devvars["info"][0] if len(parsed_devvars["info"]) > 0 else "Unknown",
-                "hardware_version": parsed_devvars["info"][1] if len(parsed_devvars["info"]) > 1 else "Unknown",
-                "firmware_version": parsed_devvars["info"][2] if len(parsed_devvars["info"]) > 2 else "Unknown",
+            device_type = f"{parsed_devvars['info'][0]} {parsed_statusvars.get('lamp', 'Unknown')}"
+            device_info = {
+#                "device_type": parsed_devvars["info"][0] if len(parsed_devvars["info"]) > 0 else "Unknown",
+                "device_type": device_type if len(parsed_devvars["info"]) > 0 else "Unknown",
+                "hardware_version": parsed_devvars["info"][1].lstrip('V') if len(parsed_devvars["info"]) > 1 else "Unknown",
+                "firmware_version": parsed_devvars["info"][2].lstrip('V') if len(parsed_devvars["info"]) > 2 else "Unknown",
                 "ip_address": parsed_devvars["info"][3] if len(parsed_devvars["info"]) > 3 else "Unknown",
                 "mac_address": parsed_devvars["info"][4] if len(parsed_devvars["info"]) > 4 else "Unknown",
                 "light_channels": parsed_statusvars.get("lamp", "Unknown"),
             }
+            _LOGGER.debug(f"Device info: {device_info}")  # Debug log
+            return device_info
         except KeyError as e:
             _LOGGER.error(f"Missing key in parsed data: {e}")
             return {}

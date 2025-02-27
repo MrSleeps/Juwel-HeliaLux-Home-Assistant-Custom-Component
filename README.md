@@ -18,13 +18,11 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 * `tankname_white` (White light intensity, 0-100)
 * `tankname_current_profile` (Currently selected profile)
 * `tankname_profiles` (Count of available profiles)
-* `tankname_manualcolorsimulationenabled` **This will be removed in a future version**
-* `tankname_manualdaytimesimulationenabled` **This will be removed in a future version**
 * `tankname_device_time` (Time on the controller)
 * `tankname_tank_combined_sensor` (this combines all the above sensors into one)
 
 ## Other Entities/Devices
-* `select.tankname_profiles` (Allows you to choose a profile that the controller will use)
+* `select.tankname_profile` (Allows you to choose a profile that the controller will use)
 * `binary_sensor.tankname_manual_color_simulation_enabled` (Shows On/Off - used by the switch)
 * `binary_sensor.tankname_manual_daytime_simulation_enabled` (Shows On/Off - used by the switch)
 * `light.tankname_light` (The main light, allows you to control your tank light)
@@ -33,6 +31,8 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 * `number.tank_name_manual_color_simulation_duration` (Sets the duration of the Manual Colour Simulation)
 * `number.tank_name_manual_daytime_simulation_duration` (Sets the duration of the Manual Colour Simulation)
 * `Tank Device` (All sensors are linked to the relevant device)
+
+(tank_name will be replaced with whatever you named your fish tank)
 
 
 ## How to install
@@ -58,6 +58,10 @@ The Juwel Helialux unit is a bit clunky and is easily overloaded (mine is at lea
 Also, Home Assistants way of dealing with colours on the colour wheel doesn't play overly well with the Juwel Helialux Controller. If you are having trouble getting just RGB colours then drag the white brightness down and have a wiggle with the colour wheel.
 
 Any bugs you find, please post on GitHub (and provide logs!).
+
+## Upgrade Notes
+
+The sensors tankname_manualcolorsimulationenabled and tankname_manualdaytimesimulationenabled have been removed, you will need to manually remove them and update any scripts/automations to use the binary sensors instead.
 
 ## Bug Reports
 Please follow the template when submitting a bug report, to help logs will be needed. To turn on debug logging for the integration you will need to add something like the following to your configuration.yml
