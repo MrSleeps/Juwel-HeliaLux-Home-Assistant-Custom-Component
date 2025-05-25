@@ -118,50 +118,42 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn the light on with optional parameters."""
-        _LOGGER.debug("Turning on Juwel Helialux light with kwargs: %s", kwargs)
-
+        _LOGGER.debug("Turn on called with: %s", kwargs)
+        
+        # Get target values with defaults
         brightness = kwargs.get("brightness", 255)
         rgbw_color = kwargs.get("rgbw_color", (255, 255, 255, 255))
+        
+        # Convert to device scale (0-100) - only do this once!
+        white = min(100, max(0, round(rgbw_color[3] / 2.55)))
+        blue = min(100, max(0, round(rgbw_color[2] / 2.55)))
+        green = min(100, max(0, round(rgbw_color[1] / 2.55)))
+        red = min(100, max(0, round(rgbw_color[0] / 2.55)))
+        
+        # Apply brightness scaling if needed
+        if brightness < 255:
+            scale = brightness / 255.0
+            white = min(100, round(white * scale))
+            blue = min(100, round(blue * scale))
+            green = min(100, round(green * scale))
+            red = min(100, round(red * scale))
 
-        # Convert HA brightness (0-255) to Juwel's (0-100)
-        brightness_juwel = brightness * 2.55
-
-        # Calculate the scaling factor for RGBW values based on brightness
-        scale_factor = brightness_juwel / 100.0
-
-        # Convert RGBW values (0-255) to Juwel's (0-100)
-        red, green, blue, white = (
-            int(rgbw_color[0] * 2.55),
-            int(rgbw_color[1] * 2.55),
-            int(rgbw_color[2] * 2.55),
-            int(rgbw_color[3] * 2.55),
-        )
-
-        # Debugging output
-        _LOGGER.debug("Converted RGBW values (scaled): Red: %d, Green: %d, Blue: %d, White: %d",
-                      red, green, blue, white)
-
-        # Ensure all values are within the range of 0-100
-        red = max(0, min(100, red))
-        green = max(0, min(100, green))
-        blue = max(0, min(100, blue))
-        white = max(0, min(100, white))
-
-        _LOGGER.debug(
-            "Final RGBW values after clamping: Red: %d, Green: %d, Blue: %d, White: %d",
-            red, green, blue, white,
-        )
-
-        # Now set the manual color with the adjusted values
-        await self._controller.start_manual_color_simulation(1439)
-        await self._controller.set_manual_color(white, blue, green, red)
-
-        # Update the state
-        self._attr_is_on = True
-        self._attr_brightness = brightness
-        self._attr_rgbw_color = rgbw_color
-
-        self.async_write_ha_state()
+        _LOGGER.debug("Setting light to W:%d B:%d G:%d R:%d", white, blue, green, red)
+        
+        try:
+            # Set the light state - values are already in 0-100 range
+            await self._controller.start_manual_color_simulation(1439)
+            await self._controller.set_manual_color(white, blue, green, red)
+            
+            # Update local state immediately
+            self._attr_is_on = True
+            self._attr_brightness = brightness
+            self._attr_rgbw_color = rgbw_color
+            self.async_write_ha_state()
+            
+        except Exception as e:
+            _LOGGER.error("Error setting light state: %s", e)
+            raise
 
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
