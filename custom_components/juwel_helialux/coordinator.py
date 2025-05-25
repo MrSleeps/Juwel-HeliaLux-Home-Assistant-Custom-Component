@@ -3,6 +3,7 @@ from datetime import timedelta
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_NAME, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
 from .pyhelialux.pyHelialux import Controller as Helialux
+import asyncio
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -18,12 +19,15 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
         )
         self.tank_host = tank_host
         self.tank_protocol = tank_protocol
+        self._manual_override = False
+        self._override_until = None
         _LOGGER.debug("Initializing Coordinator")
 
         url = f"{self.tank_protocol}://{self.tank_host}"
         self.helialux = Helialux(url)
         self.data = {}  
-        # Set default device info (to be updated after first fetch)
+        
+        # Set default device info
         self.device_info = {
             "identifiers": {(DOMAIN, tank_name)},
             "name": tank_name,
@@ -35,52 +39,51 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
             "connections": set(),
         }
 
+    async def set_manual_override(self, active: bool, duration: int = 5):
+        """Control manual override mode."""
+        self._manual_override = active
+        if active:
+            self._override_until = asyncio.get_event_loop().time() + duration
+            _LOGGER.debug("Manual override active for %s seconds", duration)
+        else:
+            self._override_until = None
+            _LOGGER.debug("Manual override deactivated")
+
     async def async_config_entry_first_refresh(self):
         """Fetch initial data and store device info."""
-        await self.async_refresh()  # Fetch initial data
+        await self.async_refresh()
 
-        # Fetch device info from the Helialux controller
-        _LOGGER.debug("Fetching device info from Helialux controller...")
         device_info = await self.helialux.device_info()
-        _LOGGER.debug("Fetched device info: %s", device_info)  # Log fetched info
+        _LOGGER.debug("Fetched device info: %s", device_info)
 
         if device_info:
-            self.device_info["sw_version"] = device_info.get("firmware_version", "Unknown")
-            self.device_info["hw_version"] = device_info.get("hardware_version", "Unknown")
-            self.device_info["model"] = f"{device_info.get('device_type', 'Unknown')}"
-            _LOGGER.debug("Updated Device Info: %s", self.device_info)
-        else:
-            _LOGGER.error("Failed to fetch device info from Helialux controller.")
-
+            self.device_info.update({
+                "sw_version": device_info.get("firmware_version", "Unknown"),
+                "hw_version": device_info.get("hardware_version", "Unknown"),
+                "model": device_info.get("device_type", "Helialux"),
+            })
 
     async def _async_update_data(self):
         """Fetch the latest data from the Helialux device."""
+        if self._manual_override and self._override_until:
+            if asyncio.get_event_loop().time() < self._override_until:
+                _LOGGER.debug("Skipping update due to manual override")
+                return self.data
+            else:
+                self._manual_override = False
+                self._override_until = None
+
         try:
-            # Fetch status data
             status_data = await self.helialux.get_status()
-            _LOGGER.debug("Raw status data received from Helialux: %s", status_data)
+            profile_data = await self.helialux.get_profiles()
 
             if not isinstance(status_data, dict):
-                _LOGGER.error("Invalid status data format from Helialux, received: %s", type(status_data))
+                _LOGGER.error("Invalid status data format")
                 status_data = {}
-
-            # Fetch profile data
-            profile_data = await self.helialux.get_profiles()
-            _LOGGER.debug("Raw profile data received from Helialux: %s", profile_data)
-
             if not isinstance(profile_data, dict):
-                _LOGGER.error("Invalid profile data format from Helialux, received: %s", type(profile_data))
+                _LOGGER.error("Invalid profile data format")
                 profile_data = {}
 
-            # Fetch device info and update the device_info dictionary
-            device_info = await self.helialux.device_info()
-            if device_info:
-                self.device_info["sw_version"] = device_info.get("firmware_version", "0.0.0.0")
-                self.device_info["hw_version"] = device_info.get("hardware_version", "0.0.0.0")
-                self.device_info["model"] = f"{device_info.get('device_type', 'Unknown')}"
-                _LOGGER.debug("Updated Device Info: %s", self.device_info)
-
-            # Merge status and profile data
             merged_data = {
                 "current_profile": status_data.get("currentProfile", "offline"),
                 "device_time": status_data.get("deviceTime", "00:00"),
@@ -95,13 +98,8 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
             }
 
             _LOGGER.debug("Merged data: %s", merged_data)
-            return merged_data  # ✅ Always return a dictionary
+            return merged_data
 
         except Exception as e:
-            _LOGGER.error("Error fetching data from Helialux device: %s", e)
-            return {}  # ✅ Always return an empty dictionary
-        
-    async def async_update(self):
-        """Update the entity's state."""
-        await self._async_update_data()  # Call the data update method
-        self.async_write_ha_state()  # Notify Home Assistant to refresh the entity state        
+            _LOGGER.error("Error fetching data: %s", e)
+            return self.data or {}
