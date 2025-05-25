@@ -57,7 +57,7 @@ Also, Home Assistants way of dealing with colours on the colour wheel doesn't pl
 Please follow the template when submitting a bug report, to help logs will be needed. To turn on debug logging for the integration you will need to add something like the following to your configuration.yml
 ```
     logger:
-      default: info`
+      default: info
       logs:
         custom_components.juwel_helialux: debug
 ```
