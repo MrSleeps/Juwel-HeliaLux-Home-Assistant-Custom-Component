@@ -7,6 +7,8 @@ assignees: MrSleeps
 
 ---
 
+## Disable any other integrations (such as HomeKit) that are also interacting with your Juwel controller
+
 ## Make sure you have read the Readme before filing a bug issue
 
 **Describe the bug**
