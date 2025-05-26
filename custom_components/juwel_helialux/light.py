@@ -124,25 +124,34 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         brightness = kwargs.get("brightness", 255)
         rgbw_color = kwargs.get("rgbw_color", (255, 255, 255, 255))
         
-        # Convert to device scale (0-100) - only do this once!
-        white = min(100, max(0, round(rgbw_color[3] / 2.55)))
-        blue = min(100, max(0, round(rgbw_color[2] / 2.55)))
-        green = min(100, max(0, round(rgbw_color[1] / 2.55)))
-        red = min(100, max(0, round(rgbw_color[0] / 2.55)))
+        # Convert to device scale (0-100)
+        white = min(100, max(0, rgbw_color[3] / 2.55))
+        blue = min(100, max(0, rgbw_color[2] / 2.55))
+        green = min(100, max(0, rgbw_color[1] / 2.55))
+        red = min(100, max(0, rgbw_color[0] / 2.55))
         
         # Apply brightness scaling if needed
         if brightness < 255:
             scale = brightness / 255.0
-            white = min(100, round(white * scale))
-            blue = min(100, round(blue * scale))
-            green = min(100, round(green * scale))
-            red = min(100, round(red * scale))
+            white = min(100, white * scale)
+            blue = min(100, blue * scale)
+            green = min(100, green * scale)
+            red = min(100, red * scale)
 
         _LOGGER.debug("Setting light to W:%d B:%d G:%d R:%d", white, blue, green, red)
         
+        # Enable manual override for 5 seconds
+        await self.coordinator.set_manual_override(True, 5)
+        
         try:
-            # Set the light state - values are already in 0-100 range
-            await self._controller.start_manual_color_simulation(1439)
+            # Set the light state
+            #await self._controller.start_manual_color_simulation(1439)
+            # duration_hours = self.hass.states.get(f"number.{self._attr_unique_id}_manual_color_simulation_duration").state
+            duration_hours = self.coordinator.data.get("manual_color_simulation_duration", 12)
+            duration_minutes = int(float(duration_hours) * 60)
+            _LOGGER.debug("Manual Hours: %s Manual Minutes: %s", duration_hours, duration_minutes)
+            # Set the light state with the configured duration
+            await self._controller.start_manual_color_simulation(duration_minutes)            
             await self._controller.set_manual_color(white, blue, green, red)
             
             # Update local state immediately
@@ -153,12 +162,15 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
             
         except Exception as e:
             _LOGGER.error("Error setting light state: %s", e)
+            await self.coordinator.set_manual_override(False)
             raise
 
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
         _LOGGER.debug("Turning off Juwel Helialux light")
-        await self._controller.start_manual_color_simulation(1439)
+        duration_hours = self.coordinator.data.get("manual_color_simulation_duration", 12)  # default 12 hours
+        duration_minutes = int(duration_hours * 60)        
+        await self._controller.start_manual_color_simulation(duration_minutes)
         await self._controller.set_manual_color(0, 0, 0, 0)
         self._attr_is_on = False
         self._attr_brightness = 0

@@ -44,10 +44,17 @@ class HelialuxNumberEntity(NumberEntity):
         return self._state
 
     async def async_set_native_value(self, value):
+        #"""Set the duration value."""
+        #self._state = int(value)
+        #self.async_write_ha_state()
+        #_LOGGER.debug(f"Set {self.entity_id} to {value} minutes")
+
         """Set the duration value."""
-        self._state = int(value)
+        self._state = float(value)
+        # Store the value in the coordinator
+        self.coordinator.data[f"{self._attr_translation_key}_duration"] = self._state
         self.async_write_ha_state()
-        _LOGGER.debug(f"Set {self.entity_id} to {value} minutes")
+        _LOGGER.debug(f"Set {self.entity_id} to {value} hours")        
 
     async def async_update(self):
         """Update the state from HA data."""

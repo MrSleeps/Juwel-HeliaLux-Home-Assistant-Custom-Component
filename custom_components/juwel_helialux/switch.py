@@ -65,15 +65,29 @@ class HelialuxManualColorSimulationSwitch(HelialuxSwitch):
 
     async def async_turn_on(self, **kwargs):
         """Turn on manual color simulation using the duration set in number helper."""
-        duration_entity = f"number.{self.tank_id}_manual_color_simulation_duration"
-        duration_state = self.coordinator.hass.states.get(duration_entity)
-        duration = int(duration_state.state) * 60 if duration_state else 60  # Convert hours to minutes
+        try:
+            duration_entity = f"number.{self.tank_id}_manual_color_simulation_duration"
+            duration_state = self.coordinator.hass.states.get(duration_entity)
+            
+            if duration_state is None:
+                _LOGGER.warning("Duration number entity not found, using default 1 hour")
+                duration = 60  # Default to 1 hour in minutes
+            else:
+                try:
+                    duration = float(duration_state.state) * 60  # Convert hours to minutes
+                    duration = max(1, min(1440, duration))  # Clamp between 1 min and 24 hours
+                except (ValueError, TypeError) as e:
+                    _LOGGER.warning(f"Invalid duration value: {duration_state.state}, using default 1 hour. Error: {e}")
+                    duration = 60
 
-        _LOGGER.debug(f"Starting manual color simulation for {duration} minutes")
-
-        await self.coordinator.helialux.start_manual_color_simulation(duration)
-        await self.coordinator.async_refresh()
-        self._update_state()
+            _LOGGER.debug(f"Starting manual color simulation for {duration} minutes")
+            await self.coordinator.helialux.start_manual_color_simulation(int(duration))
+            await self.coordinator.async_refresh()
+            self._update_state()
+            
+        except Exception as e:
+            _LOGGER.error(f"Error starting manual color simulation: {e}")
+            raise
 
     async def async_turn_off(self, **kwargs):
         """Turn off manual color simulation."""
