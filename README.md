@@ -24,9 +24,10 @@ These sensors are read only, if you want to do things like turn the aquarium lig
 * `tankname_tank_combined_sensor` (this combines all the above sensors into one)
 
 ## Other Entities/Devices
+* `number.tank_name_manual_color_simulation_duration` (Sets the amount of time manual simulation stays on for)
+* `binary_sensor.tank_name_manual_color_simulation` (On or off)
+* `switch.tank_name_manual_color_simulation` (Turns on or off Manual Colour Simulation)
 * `select.tankname_profiles` (Allows you to choose a profile that the controller will use)
-* `binary_sensor.tankname_manual_color_simulation_enabled`
-* `binary_sensor.tankname_manual_daytime_simulation_enabled`
 * `light.tankname_light` (The main light, allows you to control your tank light)
 * `Tank Device` (All sensors are linked to the relevant device)
 
@@ -43,7 +44,7 @@ Once you've done either of those, restart your Home Assistant. Once Home Assista
 
 ## Once installed
 
-You'll have your sensors listed above and a new light (light.tankname_light) to play with.
+You'll have your sensors listed above and a new light (light.tankname_light) to play with. You can change how long the manual simulation lasts for by changing the number.tank_name_manual_color_simulation value.
 
 ## Things to be aware of
 
