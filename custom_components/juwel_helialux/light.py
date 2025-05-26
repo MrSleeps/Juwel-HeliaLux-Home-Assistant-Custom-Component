@@ -144,12 +144,13 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         await self.coordinator.set_manual_override(True, 5)
         
         try:
-            # Set the light state
-            #await self._controller.start_manual_color_simulation(1439)
-            # duration_hours = self.hass.states.get(f"number.{self._attr_unique_id}_manual_color_simulation_duration").state
-            duration_hours = self.coordinator.data.get("manual_color_simulation_duration", 12)
-            duration_minutes = int(float(duration_hours) * 60)
-            _LOGGER.debug("Manual Hours: %s Manual Minutes: %s", duration_hours, duration_minutes)
+            # Get duration from number entity (same approach as in switch.py)
+            duration_entity = f"number.{self._attr_unique_id.split('_light')[0]}_manual_color_simulation_duration"
+            duration_state = self.coordinator.hass.states.get(duration_entity)
+            duration_minutes = int(float(duration_state.state) * 60) if duration_state else 720  # Default to 12 hours if not found
+            
+            _LOGGER.debug("Using manual color simulation duration: %s minutes", duration_minutes)
+            
             # Set the light state with the configured duration
             await self._controller.start_manual_color_simulation(duration_minutes)            
             await self._controller.set_manual_color(white, blue, green, red)
@@ -168,12 +169,20 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
         _LOGGER.debug("Turning off Juwel Helialux light")
-        duration_hours = self.coordinator.data.get("manual_color_simulation_duration", 12)  # default 12 hours
-        duration_minutes = int(duration_hours * 60)        
-        await self._controller.start_manual_color_simulation(duration_minutes)
-        await self._controller.set_manual_color(0, 0, 0, 0)
-        self._attr_is_on = False
-        self._attr_brightness = 0
-        self._attr_rgbw_color = (0, 0, 0, 0)
-
-        self.async_write_ha_state()
+        try:
+            # Get duration from number entity (same approach as in switch.py)
+            duration_entity = f"number.{self._attr_unique_id.split('_light')[0]}_manual_color_simulation_duration"
+            duration_state = self.coordinator.hass.states.get(duration_entity)
+            duration_minutes = int(float(duration_state.state) * 60) if duration_state else 720  # Default to 12 hours if not found
+            
+            _LOGGER.debug("Using manual color simulation duration: %s minutes", duration_minutes)
+            
+            await self._controller.start_manual_color_simulation(duration_minutes)
+            await self._controller.set_manual_color(0, 0, 0, 0)
+            self._attr_is_on = False
+            self._attr_brightness = 0
+            self._attr_rgbw_color = (0, 0, 0, 0)
+            self.async_write_ha_state()
+        except Exception as e:
+            _LOGGER.error("Error turning off light: %s", e)
+            raise
