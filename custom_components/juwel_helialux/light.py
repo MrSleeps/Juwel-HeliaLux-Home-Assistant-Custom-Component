@@ -8,6 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import slugify
 from .const import DOMAIN, CONF_UPDATE_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
@@ -39,9 +40,10 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
 
     def __init__(self, coordinator, tank_name):
         """Initialize the light entity."""
-        super().__init__(coordinator)#
+        super().__init__(coordinator)
         self._controller = coordinator.helialux
-        self._attr_unique_id = f"{tank_name.lower().replace(' ', '_')}_light"
+        tank_slug = slugify(tank_name)
+        self._attr_unique_id = f"{tank_slug}_light"
         self.entity_id = f"light.{self._attr_unique_id}"
         self._attr_has_entity_name = True 
         self._attr_translation_key = "light_name"
@@ -50,7 +52,7 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         self._attr_is_on = False
         self._attr_brightness = None
         self._attr_rgbw_color = (0, 0, 0, 0)
-        self._attr_device_info = coordinator.device_info
+        self._attr_device_info = coordinator.device_info  # CORRECT
 
 
     @property
@@ -145,7 +147,7 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         
         try:
             # Get duration from number entity (same approach as in switch.py)
-            duration_entity = f"number.{self._attr_unique_id.split('_light')[0]}_manual_color_simulation_duration"
+            duration_entity = f"number.{self.coordinator.tank_slug}_manual_color_simulation_duration"
             duration_state = self.coordinator.hass.states.get(duration_entity)
             duration_minutes = int(float(duration_state.state) * 60) if duration_state else 720  # Default to 12 hours if not found
             
@@ -171,7 +173,7 @@ class JuwelHelialuxLight(CoordinatorEntity, LightEntity):
         _LOGGER.debug("Turning off Juwel Helialux light")
         try:
             # Get duration from number entity (same approach as in switch.py)
-            duration_entity = f"number.{self._attr_unique_id.split('_light')[0]}_manual_color_simulation_duration"
+            duration_entity = f"number.{self.coordinator.tank_slug}_manual_color_simulation_duration"
             duration_state = self.coordinator.hass.states.get(duration_entity)
             duration_minutes = int(float(duration_state.state) * 60) if duration_state else 720  # Default to 12 hours if not found
             

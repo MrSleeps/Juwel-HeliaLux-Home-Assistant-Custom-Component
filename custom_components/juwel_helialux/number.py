@@ -1,7 +1,8 @@
 import logging
 from homeassistant.components.number import NumberEntity
 from homeassistant.const import UnitOfTime
-from homeassistant.helpers.storage import Store  # <-- Added for persistence
+from homeassistant.helpers.storage import Store
+from homeassistant.util import slugify
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -10,7 +11,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     """Set up number entities for Helialux via config entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     tank_name = entry.data["tank_name"]
-    tank_id = tank_name.lower().replace(" ", "_")
+    tank_id = slugify(tank_name)
 
     numbers = [
         HelialuxColorSimulationDuration(hass, coordinator, entry, tank_name, tank_id),
@@ -36,7 +37,7 @@ class HelialuxNumberEntity(NumberEntity):
         self._attr_native_min_value = min_value
         self._attr_native_max_value = max_value
         self.entity_id = f"number.{tank_id}_{attribute}_duration"
-        self._attr_device_info = coordinator.device_info
+        self._attr_device_info = coordinator.device_info  # CORRECT
         self._attr_translation_key = f"{attribute}_duration"
 
         # Initialize persistent storage

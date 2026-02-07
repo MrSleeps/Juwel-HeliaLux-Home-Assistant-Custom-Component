@@ -4,6 +4,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_NAME, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
 from .pyhelialux.pyHelialux import Controller as Helialux
 import asyncio
+from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,18 +20,20 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
         )
         self.tank_host = tank_host
         self.tank_protocol = tank_protocol
+        self.tank_name = tank_name  # Store original name
+        self.tank_slug = slugify(tank_name)  # Store slugified version
         self._manual_override = False
         self._override_until = None
-        _LOGGER.debug("Initializing Coordinator")
+        _LOGGER.debug("Initializing Coordinator - Tank Name: %s, Tank Slug: %s", tank_name, self.tank_slug)
 
         url = f"{self.tank_protocol}://{self.tank_host}"
         self.helialux = Helialux(url)
         self.data = {}  
         
-        # Set default device info
+        # Set default device info - use tank_slug for identifiers, tank_name for display
         self.device_info = {
-            "identifiers": {(DOMAIN, tank_name)},
-            "name": tank_name,
+            "identifiers": {(DOMAIN, self.tank_slug)},  # Use slug for identifier
+            "name": tank_name,  # Use original name for display (NOT "tank_name" string!)
             "manufacturer": "Juwel",
             "model": "Helialux",
             "sw_version": "Unknown",
@@ -38,6 +41,7 @@ class JuwelHelialuxCoordinator(DataUpdateCoordinator):
             "configuration_url": url,
             "connections": set(),
         }
+        _LOGGER.debug("Device info created with name: %s", tank_name)
 
     async def set_manual_override(self, active: bool, duration: int = 5):
         """Control manual override mode."""

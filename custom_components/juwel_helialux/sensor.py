@@ -2,18 +2,18 @@ import logging
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
-    SensorEntityDescription,  # Correct import
+    SensorEntityDescription,
 )
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.util import slugify
 from .const import DOMAIN, CONF_TANK_HOST, CONF_TANK_NAME, CONF_TANK_PROTOCOL, CONF_UPDATE_INTERVAL
-from .coordinator import JuwelHelialuxCoordinator  # Import the coordinator from the new file
+from .coordinator import JuwelHelialuxCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-# Replace EntityDescription with SensorEntityDescription
 ENTITY_DESCRIPTIONS = {
     "red": SensorEntityDescription(key="red"),
     "green": SensorEntityDescription(key="green"),
@@ -30,69 +30,24 @@ class JuwelHelialuxSensor(CoordinatorEntity, SensorEntity):
 
     def __init__(self, coordinator, tank_name):
         super().__init__(coordinator)
-        self._attr_name = f"{tank_name} Combined Sensor"
-        self._attr_unique_id = f"{tank_name}_sensor"
+        # FIX: Don't duplicate the tank_name in the name attribute
+        # Just use a simple name since has_entity_name = True will handle it
+        self._attr_name = "Combined Sensor"  # Just the entity name part
+        tank_slug = slugify(tank_name)
+        self._attr_unique_id = f"{tank_slug}_combined_sensor"  # Changed from _sensor to _combined_sensor
         self.tank_name = tank_name
-        self.device_info_data = {}
         self._attr_device_info = coordinator.device_info
-
-    async def _initialize_device_info(self):
-        """Fetch and initialize device info during initialization."""
-        try:
-            self.device_info_data = await self.coordinator.helialux.device_info() or {}
-            _LOGGER.debug("Fetched device info during init: %s", self.device_info_data)
-            
-            if not self.device_info_data:
-                _LOGGER.error("Device info is empty or invalid, setting default values")
-                self.device_info_data = {
-                    "device_type": "HeliaLux SmartControl",
-                    "light_channels": "Unknown",
-                    "hardware_version": "v0.0.0",
-                    "firmware_version": '9.9.9',
-                    "mac_address": "00:00:00:00:00:00",
-                }
-
-            device_type = self.device_info_data.get("device_type", "HeliaLux SmartControl")
-            lamp_model = self.device_info_data.get("light_channels", "Unknown")
-            combined_model = f"{device_type} {lamp_model}".strip()
-            _LOGGER.debug("Combined Model: %s", combined_model)
-
-            self._attr_device_info = DeviceInfo(
-                identifiers={(DOMAIN, self.tank_name)},
-                name=self.tank_name,
-                manufacturer="Juwel",
-                model=combined_model,
-                sw_version=self.device_info_data.get("hardware_version", "v0.0.0"),
-                hw_version=self.device_info_data.get("firmware_version", "v9.9.9"),
-                configuration_url=f"{self.coordinator.tank_protocol}://{self.coordinator.tank_host}",
-                connections={(self.device_info_data.get("mac_address", "00:00:00:00:00:00"),)},
-            )
-            _LOGGER.debug("Initialized DeviceInfo: %s", self._attr_device_info)
-            return True
-        except Exception as e:
-            _LOGGER.error("Error initializing device info: %s", str(e))
-            self._attr_device_info = None
-            return False
+        self._attr_has_entity_name = True
 
     async def async_added_to_hass(self):
         """Called when the entity is added to Home Assistant."""
         try:
-            device_info_initialized = await self._initialize_device_info()
-            _LOGGER.debug("Entity initialization complete for %s", self.name)
-
-            if not device_info_initialized:
-                _LOGGER.error("Failed to initialize device info for %s", self.name)
-                return
-
-            if self._attr_device_info is None:
-                _LOGGER.error("Device info is not set properly, cannot write state for %s", self.name)
-                return
-
             self.async_write_ha_state()
             await self.coordinator.async_request_refresh()
-
+            
+            _LOGGER.debug("Entity initialization complete for %s", self.name)
             _LOGGER.debug("Coordinator data: %s", self.coordinator.data)
-            _LOGGER.debug("Device info initialized: %s", device_info_initialized)
+            _LOGGER.debug("Device info from coordinator: %s", self._attr_device_info)
         except Exception as e:
             _LOGGER.error("Error during async_added_to_hass for %s: %s", self.name, str(e))
 
@@ -153,8 +108,10 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
 
-        self._attr_unique_id = f"{tank_name}_{attribute}"
-        self.entity_id = f"sensor.{tank_name.lower()}_{attribute}"
+        tank_slug = slugify(tank_name)
+        
+        self._attr_unique_id = f"{tank_slug}_{attribute}"
+        self.entity_id = f"sensor.{tank_slug}_{attribute}"
 
         self.entity_description = SensorEntityDescription(
             key=attribute,
@@ -165,10 +122,10 @@ class JuwelHelialuxAttributeSensor(CoordinatorEntity, SensorEntity):
 
         self._attr_has_entity_name = True
         self._attr_translation_placeholders = {"tank_name": tank_name}
+        self._attr_device_info = coordinator.device_info
 
         self._attribute = attribute
         self._default_value = default_value
-        self._attr_device_info = coordinator.device_info
 
         _LOGGER.debug("Device info for %s: %s", self._attr_unique_id, self._attr_device_info)        
 
@@ -193,8 +150,10 @@ class JuwelHelialuxProfilesSensor(CoordinatorEntity, SensorEntity):
 
     def __init__(self, coordinator, tank_name, attribute):
         super().__init__(coordinator)
-        self._attr_unique_id = f"{tank_name}_profiles"
-        self.entity_id = f"sensor.{tank_name.lower()}_profiles"
+        tank_slug = slugify(tank_name)
+        
+        self._attr_unique_id = f"{tank_slug}_profiles"
+        self.entity_id = f"sensor.{tank_slug}_profiles"
 
         self.entity_description = SensorEntityDescription(
             key="profiles",
@@ -231,7 +190,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     tank_host = config_entry.data[CONF_TANK_HOST]
     tank_protocol = config_entry.data[CONF_TANK_PROTOCOL]
     update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, 1)
-    coordinator = JuwelHelialuxCoordinator(hass, tank_host, tank_protocol, tank_name, update_interval)
+    
+    # Get coordinator from hass.data
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
+    
     if coordinator.data is None:
         coordinator.data = {}
 

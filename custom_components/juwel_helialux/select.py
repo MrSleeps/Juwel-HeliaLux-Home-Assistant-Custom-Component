@@ -2,6 +2,7 @@ import logging
 from homeassistant.components.select import SelectEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.util import slugify
 from .const import DOMAIN, CONF_TANK_NAME
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,14 +21,15 @@ class JuwelHelialuxProfileSelect(CoordinatorEntity, SelectEntity):
     def __init__(self, coordinator, tank_name):
         """Initialize the select entity."""
         super().__init__(coordinator)
-        self._attr_unique_id = f"{tank_name}_profile_select"
+        tank_slug = slugify(tank_name)
+        self._attr_unique_id = f"{tank_slug}_profile_select"
         self._attr_icon = "mdi:format-list-bulleted"
         self._attr_entity_category = EntityCategory.CONFIG
         self._attr_options = []
         self._current_profile = None
         self._attr_has_entity_name = True 
         self._attr_translation_key = "profile"
-        self._attr_device_info = coordinator.device_info
+        self._attr_device_info = coordinator.device_info  # CORRECT
         _LOGGER.debug("Device info for select entity %s: %s", self._attr_unique_id, self._attr_device_info)
 
     @property

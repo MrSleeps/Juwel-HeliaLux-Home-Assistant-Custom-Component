@@ -1,5 +1,6 @@
 import logging
 from homeassistant.components.switch import SwitchEntity
+from homeassistant.util import slugify
 from .pyhelialux.pyHelialux import Controller as Helialux
 from .const import DOMAIN
 
@@ -9,7 +10,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     """Set up switches for Helialux via config entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     tank_name = entry.data["tank_name"]
-    tank_id = tank_name.lower().replace(" ", "_")
+    tank_id = slugify(tank_name)
 
     switches = [
         HelialuxManualColorSimulationSwitch(coordinator, tank_name, tank_id),
@@ -27,7 +28,7 @@ class HelialuxSwitch(SwitchEntity):
         self.tank_name = tank_name
         self.tank_id = tank_id
         self._state = False
-        self._attr_device_info = coordinator.device_info
+        self._attr_device_info = coordinator.device_info  # CORRECT
         self._attr_has_entity_name = True 
         self._attr_translation_key = attribute
         self._attr_unique_id = f"{tank_id}_{attribute}" 
