@@ -9,7 +9,9 @@ assignees: MrSleeps
 
 ## Disable any other integrations (such as HomeKit) that are also interacting with your Juwel controller
 
-## Make sure you have read the Readme before filing a bug issue
+## Make sure you have read the Readme before filing a bug issue, if the issue requires logs and you don't provide debug logs I probably won't look into it (sorry! it's a simple request)
+
+## Be aware that I don't upgrade Home Assistant the day a new version comes out, I usually wait until at least the .2 version comes out, if you upgrade on the day it's released please don't expect a quick fix
 
 **Describe the bug**
 A clear and concise description of what the bug is.
