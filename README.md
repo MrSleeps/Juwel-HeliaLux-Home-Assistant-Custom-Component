@@ -10,7 +10,7 @@ Once installed it gives you a bunch of sensors and a new light that you can turn
 
 ## Available sensors
 
-These sensors are read only, if you want to do things like turn the aquarium light on and off you will need to intereact with light.tankname.
+These sensors are read only, if you want to do things like turn the aquarium light on and off you will need to intereact with light.tank_name.
 
 * `tankname_blue` (Blue light intensity, 0-100)
 * `tankname_green` (Green light intensity, 0-100)
@@ -55,7 +55,7 @@ The Juwel Helialux unit is a bit clunky and is easily overloaded (mine at least)
 Also, Home Assistants way of dealing with colours on the colour wheel doesn't play overly well with the Juwel Helialux Controller. If you are having trouble getting just RGB colours then drag the white brightness down and have a wiggle with the colour wheel. I'm working to fix it but tbh, I don't really know what I am doing. Any other bugs then please post on GitHub.
 
 ## Bug Reports
-Please follow the template when submitting a bug report, to help logs will be needed. To turn on debug logging for the integration you will need to add something like the following to your configuration.yml
+Please follow the template when submitting a bug report, to help **logs will be required**. To turn on debug logging for the integration you will need to add something like the following to your configuration.yml
 ```
     logger:
       default: info
