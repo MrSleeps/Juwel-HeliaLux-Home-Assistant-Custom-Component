@@ -34,7 +34,7 @@ class ManualColorSimulationBinarySensor(CoordinatorEntity, BinarySensorEntity):
         self._attr_translation_key = "manual_color_simulation"
         self._attr_has_entity_name = True
         self.entity_id = f"binary_sensor.{self._attr_unique_id}"
-        self._attr_device_info = coordinator.device_info  # CORRECT
+        self._attr_device_info = coordinator.device_info
         _LOGGER.debug("Translation key for %s: %s", self._attr_unique_id, self._attr_translation_key)
 
     async def async_added_to_hass(self):
@@ -77,4 +77,5 @@ class ManualDaytimeSimulationBinarySensor(CoordinatorEntity, BinarySensorEntity)
 
     @property
     def device_class(self):
+
         return "power"
