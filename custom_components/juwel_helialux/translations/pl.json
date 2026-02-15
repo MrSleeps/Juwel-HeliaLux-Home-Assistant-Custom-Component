@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Czas trwania ręcznej symulacji dziennej (godziny)"
+      },
+      "daytime_simulation_position": {
+        "name": "Czas symulacji dziennej",
+        "state": {
+          "measured": "godziny"
+        }
       }
     },
     "switch": {

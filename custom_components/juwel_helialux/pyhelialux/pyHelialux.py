@@ -197,7 +197,6 @@ class Controller:
         try:
             device_type = f"{parsed_devvars['info'][0]} {parsed_statusvars.get('lamp', 'Unknown')}"
             device_info = {
-#                "device_type": parsed_devvars["info"][0] if len(parsed_devvars["info"]) > 0 else "Unknown",
                 "device_type": device_type if len(parsed_devvars["info"]) > 0 else "Unknown",
                 "hardware_version": parsed_devvars["info"][1].lstrip('V') if len(parsed_devvars["info"]) > 1 else "Unknown",
                 "firmware_version": parsed_devvars["info"][2].lstrip('V') if len(parsed_devvars["info"]) > 2 else "Unknown",
@@ -210,8 +209,6 @@ class Controller:
         except KeyError as e:
             _LOGGER.error(f"Missing key in parsed data: {e}")
             return {}
-
-
 
     async def set_manual_color(self, white, blue, green, red):
         """Set manual color asynchronously."""
@@ -303,20 +300,21 @@ class Controller:
             _LOGGER.error(f"Error setting profile: {e}")
             return False
         
-    async def start_manual_daytime_simulation(self, duration=60):
-        """Start manual daytime simulation asynchronously."""
+    async def start_manual_daytime_simulation(self, target_minutes, duration="01:00"):
+        """Start manual daytime simulation asynchronously.
+        
+        Args:
+            target_minutes: Time position in minutes since midnight (0-1440)
+            duration: How long to run the simulation in HH:MM format
+        """
         session = await self._get_session()
         url = f"{self._url}/stat"
         
-        # Convert duration from minutes to hours:minutes format
-        hours = duration // 60
-        minutes = duration % 60
-        ttime = f"{hours:02d}:{minutes:02d}"  # Format as HH:MM
-        
         data = {
             "action": 12,  # Action for daytime simulation
+            "ch5": target_minutes,  # Target time position in minutes since midnight
             "tswi": "true",  # Enable daytime simulation
-            "ttime": ttime,  # Duration in HH:MM format
+            "ttime": duration,  # Duration in HH:MM format
             "cswi": "false",  # Ensure color simulation is off
             "ctime": "01:00",  # Default color simulation time (not used)
             "pwdWarn": 0  # Password warning (if applicable)
@@ -325,10 +323,42 @@ class Controller:
         try:
             _LOGGER.debug(f"Starting manual daytime simulation with data: {data}")
             async with session.post(url, data=data) as response:
+                response_text = await response.text()
+                _LOGGER.debug(f"Response: {response_text}")
                 if response.status != 200:
                     _LOGGER.error(f"Failed to start manual daytime simulation: {response.status}")
         except Exception as e:
             _LOGGER.error(f"Error starting manual daytime simulation: {e}")
+
+    async def update_daytime_simulation_position(self, target_minutes, duration="01:00"):
+        """Update the position of an active manual daytime simulation.
+        
+        Args:
+            target_minutes: New time position in minutes since midnight (0-1440)
+            duration: Duration in HH:MM format
+        """
+        session = await self._get_session()
+        url = f"{self._url}/stat"
+        
+        data = {
+            "action": 12,  # Action for daytime simulation
+            "ch5": target_minutes,  # New target time position
+            "tswi": "true",  # Keep simulation active
+            "ttime": duration,  # Duration in HH:MM format
+            "cswi": "false",  # Ensure color simulation is off
+            "ctime": "01:00",  # Default color simulation time (not used)
+            "pwdWarn": 0  # Password warning (if applicable)
+        }
+        
+        try:
+            _LOGGER.debug(f"Updating daytime simulation position with data: {data}")
+            async with session.post(url, data=data) as response:
+                response_text = await response.text()
+                _LOGGER.debug(f"Response: {response_text}")
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to update daytime simulation position: {response.status}")
+        except Exception as e:
+            _LOGGER.error(f"Error updating daytime simulation position: {e}")
 
     async def stop_manual_daytime_simulation(self):
         """Stop manual daytime simulation asynchronously."""

@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Durata della simulazione manuale diurna (ore)"
+      },
+      "daytime_simulation_position": {
+        "name": "Ora di simulazione diurna",
+        "state": {
+          "measured": "ore"
+        }
       }
     },
     "switch": {

@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Διάρκεια χειροκίνητης προσομοίωσης ημέρας (ώρες)"
+      },
+      "daytime_simulation_position": {
+        "name": "Ώρα προσομοίωσης ημέρας",
+        "state": {
+          "measured": "ώρες"
+        }
       }
     },
     "switch": {

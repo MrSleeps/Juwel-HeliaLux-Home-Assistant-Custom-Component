@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Dauer der manuellen Tagsimulation (Stunden)"
+      },
+      "daytime_simulation_position": {
+        "name": "Tagesimulationszeit",
+        "state": {
+          "measured": "Stunden"
+        }
       }
     },
     "switch": {

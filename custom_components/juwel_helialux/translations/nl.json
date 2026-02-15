@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Duur handmatige dagsimulatie (uren)"
+      },
+      "daytime_simulation_position": {
+        "name": "Dagsimulatietijd",
+        "state": {
+          "measured": "uren"
+        }
       }
     },
     "switch": {

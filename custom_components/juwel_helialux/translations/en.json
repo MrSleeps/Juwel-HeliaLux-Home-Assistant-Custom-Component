@@ -47,7 +47,6 @@
       "device_time": { "name": "Device Time" },
       "profiles": { "name": "Available Profiles" },
       "combined_sensor": { "name": "Combined Sensor" }
-      
     },
     "binary_sensor": {
       "manual_color_simulation": { "name": "Manual Colour Simulation Enabled" },
@@ -55,25 +54,31 @@
     },
     "number": {
       "manual_color_simulation_duration": {
-        "name": "Manual Colour Simulation Duration (Hours)"
+        "name": "Manual Colour Simulation Duration"
       },
       "manual_daytime_simulation_duration": {
-        "name": "Manual Daytime Simulation Duration (Hours)"
+        "name": "Manual Daytime Simulation Duration"
+      },
+      "daytime_simulation_position": {
+        "name": "Daytime Simulation Time",
+        "state": {
+          "measured": "hours"
+        }
       }
     },
-	"switch": {
+    "switch": {
       "manual_color_simulation": { "name": "Manual Colour Simulation" },
       "manual_daytime_simulation": { "name": "Manual Daytime Simulation" }
     },
-	"light": {
-	  "light_name": {
-		"name": "Light"
-	  }
-	},
-	"select": {
-	  "profile": {
-		"name": "Profile"
-	  }
-	}
+    "light": {
+      "light_name": {
+        "name": "Light"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profile"
+      }
+    }
   }
 }

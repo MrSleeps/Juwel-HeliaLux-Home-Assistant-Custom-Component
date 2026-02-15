@@ -45,11 +45,40 @@
       "manualColorSimulationEnabled": { "name": "Simulación Manual de Color" },
       "manualDaytimeSimulationEnabled": { "name": "Simulación Manual de Hora del Día" },
       "device_time": { "name": "Hora del Dispositivo" },
-      "profiles": { "name": "Perfiles Disponibles" }
+      "profiles": { "name": "Perfiles Disponibles" },
+      "combined_sensor": { "name": "Sensor Combinado" }
     },
     "binary_sensor": {
       "manual_color_simulation": { "name": "Simulación Manual de Color Activada" },
       "manual_daytime_simulation": { "name": "Simulación Manual de Hora del Día Activada" }
+    },
+    "number": {
+      "manual_color_simulation_duration": {
+        "name": "Duración de Simulación Manual de Color (horas)"
+      },
+      "manual_daytime_simulation_duration": {
+        "name": "Duración de Simulación Manual de Hora del Día (horas)"
+      },
+      "daytime_simulation_position": {
+        "name": "Hora de Simulación Diurna",
+        "state": {
+          "measured": "horas"
+        }
+      }
+    },
+    "switch": {
+      "manual_color_simulation": { "name": "Simulación Manual de Color" },
+      "manual_daytime_simulation": { "name": "Simulación Manual de Hora del Día" }
+    },
+    "light": {
+      "light_name": {
+        "name": "Luz"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Perfil"
+      }
     }
   }
 }

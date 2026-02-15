@@ -58,6 +58,12 @@
       },
       "manual_daytime_simulation_duration": {
         "name": "Kézi nappali szimuláció időtartama (órák)"
+      },
+      "daytime_simulation_position": {
+        "name": "Nappali szimuláció ideje",
+        "state": {
+          "measured": "órák"
+        }
       }
     },
     "switch": {
