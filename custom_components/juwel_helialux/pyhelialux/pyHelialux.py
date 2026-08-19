@@ -8,6 +8,9 @@ import re
 
 _LOGGER = logging.getLogger(__name__)
 
+# Code added by @gehrausundspiel
+REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=10)
+
 STATUS_VARS_REGEX = re.compile(
     r"(?P<name>[a-zA-Z0-9]+)=((?P<number>\d+)|'(?P<string>[^']+)'|\[(?P<digit_list>(\d+,?)+)\]|\[(?P<string_list>(\"([^\"]+)\",?)+)\]);"
 )
@@ -22,8 +25,16 @@ class Controller:
     async def _get_session(self):
         """Create or reuse an aiohttp session."""
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession()
+            # Code added by @gehrausundspiel
+            self._session = aiohttp.ClientSession(timeout=REQUEST_TIMEOUT)
         return self._session
+
+    # Code added by @gehrausundspiel
+    async def close(self):
+        """Close the underlying aiohttp session, if open."""
+        if self._session is not None and not self._session.closed:
+            await self._session.close()
+        self._session = None    
 
     def nr_mins_to_formatted(self,duration):
         """Take a duration in minutes, and return an HH:MM formatted string."""
